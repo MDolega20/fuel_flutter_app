@@ -28,9 +28,9 @@ class FormNrOne extends StatefulWidget {
 
 class FormNrOneState extends State<FormNrOne> {
   final _formKey = GlobalKey<FormState>();
-  double liters;
-  double price;
-  double distance;
+  double liters; // don't work
+  double price; // don't work
+  double distance; // don't work
 
   TextEditingController input1controller = new TextEditingController();
   TextEditingController input2controller = new TextEditingController();
@@ -40,14 +40,14 @@ class FormNrOneState extends State<FormNrOne> {
   void initState() {
     super.initState();
 
-    input1controller.addListener((){
-    liters = double.parse(input1controller.text);
+    input1controller.addListener(() {
+      liters = double.parse(input1controller.text); // don't work
     });
-    input2controller.addListener((){
-    price = double.parse(input2controller.text);
+    input2controller.addListener(() {
+      price = double.parse(input2controller.text); // don't work
     });
-    input3controller.addListener((){
-    distance = double.parse(input3controller.text);
+    input3controller.addListener(() {
+      distance = double.parse(input3controller.text); // don't work
     });
   }
 
@@ -67,12 +67,12 @@ class FormNrOneState extends State<FormNrOne> {
               children: <Widget>[
                 Padding(
                   padding:
-                  const EdgeInsets.only(top: 10.0, left: 20, right: 20),
+                      const EdgeInsets.only(top: 10.0, left: 20, right: 20),
                   child: TextFormField(
                     autofocus: true,
                     controller: input1controller,
                     decoration:
-                    InputDecoration(labelText: 'How much you refueled (l)'),
+                        InputDecoration(labelText: 'How much you refueled (l)'),
                     keyboardType: TextInputType.number,
                     validator: (value) {
                       if (value.isEmpty) {
@@ -87,7 +87,7 @@ class FormNrOneState extends State<FormNrOne> {
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.only(top: 10.0, left: 20, right: 20),
+                      const EdgeInsets.only(top: 10.0, left: 20, right: 20),
                   child: TextFormField(
                     decoration: InputDecoration(
                         labelText: 'Enter the price per liter (pln)'),
@@ -106,7 +106,7 @@ class FormNrOneState extends State<FormNrOne> {
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.only(top: 10.0, left: 20, right: 20),
+                      const EdgeInsets.only(top: 10.0, left: 20, right: 20),
                   child: TextFormField(
                     decoration: InputDecoration(
                         labelText: 'Enter distance from last refueling (km)'),
