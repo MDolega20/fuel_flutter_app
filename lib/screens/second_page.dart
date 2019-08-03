@@ -44,12 +44,20 @@ class FormNrOneState extends State<FormNrOne> {
   TextEditingController input6controller =
       new TextEditingController(); // TODO not used
 
-  void tryToCalculateDistance(){
-    if(meterStart == null && meterStart != 0 && meterStop == null && meterStop > meterStart){
-      setState(() {
-        int dis = meterStop - meterStart;
-        distance = dis.toDouble();
-      });
+  void tryToCalculateDistance() {
+    print("S: $meterStart E: $meterStop");
+    if (meterStart != null && meterStart != 0 && meterStop != null) {
+      if (meterStop > meterStart) {
+        setState(() {
+          int dis = meterStop - meterStart;
+          print("D: $dis");
+          distance = dis.toDouble();
+        });
+      } else {
+        setState(() {
+          distance = null;
+        });
+      }
     }
   }
 
@@ -91,6 +99,7 @@ class FormNrOneState extends State<FormNrOne> {
         setState(() {
           meterStart = int.parse(input4controller.text);
         });
+        tryToCalculateDistance();
       }
     });
     input5controller.addListener(() {
@@ -100,6 +109,7 @@ class FormNrOneState extends State<FormNrOne> {
         setState(() {
           meterStop = int.parse(input5controller.text);
         });
+        tryToCalculateDistance();
       }
     });
   }
@@ -118,51 +128,7 @@ class FormNrOneState extends State<FormNrOne> {
             key: _formKey,
             child: Column(
               children: <Widget>[
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 10.0, left: 20, right: 20),
-                  child: TextFormField(
-                    autofocus: true,
-                    controller: input1controller,
-                    inputFormatters: [
-                      WhitelistingTextInputFormatter.digitsOnly
-                    ],
-                    decoration:
-                        InputDecoration(labelText: 'How much you refueled (l)'),
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter number';
-                      }
-                      if (num.tryParse(value) == null) {
-                        return '"$value" is not a valid number';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 10.0, left: 20, right: 20),
-                  child: TextFormField(
-                    inputFormatters: [
-                      WhitelistingTextInputFormatter.digitsOnly
-                    ],
-                    decoration: InputDecoration(
-                        labelText: 'Enter the price per liter (pln)'),
-                    keyboardType: TextInputType.number,
-                    controller: input2controller,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter number';
-                      }
-                      if (num.tryParse(value) == null) {
-                        return '"$value" is not a valid number';
-                      }
-                      return null;
-                    },
-                  ),
-                ),
+                formSectionTop(),
 //                Padding(
 //                  padding:
 //                      const EdgeInsets.only(top: 10.0, left: 20, right: 20),
@@ -196,9 +162,7 @@ class FormNrOneState extends State<FormNrOne> {
                           ],
                           decoration: InputDecoration(
                               labelText: 'Enter meter start state (km)'),
-                          style: TextStyle(
-                            fontSize: 14
-                          ),
+                          style: TextStyle(fontSize: 14),
                           keyboardType: TextInputType.number,
                           controller: input4controller,
                           validator: (value) {
@@ -222,9 +186,7 @@ class FormNrOneState extends State<FormNrOne> {
                           ],
                           decoration: InputDecoration(
                               labelText: 'Enter meter end state (km)'),
-                          style: TextStyle(
-                              fontSize: 14
-                          ),
+                          style: TextStyle(fontSize: 14),
                           keyboardType: TextInputType.number,
                           controller: input5controller,
                           validator: (value) {
@@ -273,10 +235,57 @@ class FormNrOneState extends State<FormNrOne> {
                         ? "Brak danych"
                         : "cena za kilometr: ${price * liters / distance} pln"),
                   ],
-                )
+                ),
               ],
             )),
       ],
     );
+  }
+
+  Widget formSectionTop() {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
+          child: TextFormField(
+            autofocus: true,
+            controller: input1controller,
+            decoration: InputDecoration(labelText: 'How much you refueled (l)'),
+            keyboardType: TextInputType.number,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please enter number';
+              }
+              if (num.tryParse(value) == null) {
+                return '"$value" is not a valid number';
+              }
+              return null;
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
+          child: TextFormField(
+            decoration:
+                InputDecoration(labelText: 'Enter the price per liter (pln)'),
+            keyboardType: TextInputType.number,
+            controller: input2controller,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Please enter number';
+              }
+              if (num.tryParse(value) == null) {
+                return '"$value" is not a valid number';
+              }
+              return null;
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget formSectionStart() {
+    return Text("aegaeg");
   }
 }
