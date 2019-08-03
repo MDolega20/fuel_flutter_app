@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+//import 'package:datetime_picker_formfield/datetime_picker_formfield.dart'; // TODO DATETIME FORM
 
 class SecondPage extends StatelessWidget {
   @override
@@ -45,12 +46,10 @@ class FormNrOneState extends State<FormNrOne> {
       new TextEditingController(); // TODO not used
 
   void tryToCalculateDistance() {
-    print("S: $meterStart E: $meterStop");
     if (meterStart != null && meterStart != 0 && meterStop != null) {
       if (meterStop > meterStart) {
         setState(() {
           int dis = meterStop - meterStart;
-          print("D: $dis");
           distance = dis.toDouble();
         });
       } else {
@@ -128,81 +127,99 @@ class FormNrOneState extends State<FormNrOne> {
             key: _formKey,
             child: Column(
               children: <Widget>[
-                formSectionTop(),
-//                Padding(
-//                  padding:
-//                      const EdgeInsets.only(top: 10.0, left: 20, right: 20),
-//                  child: TextFormField(
-//                    inputFormatters: [
-//                      WhitelistingTextInputFormatter.digitsOnly
-//                    ],
-//                    decoration: InputDecoration(
-//                        labelText: 'Enter distance from last refueling (km)'),
-//                    keyboardType: TextInputType.number,
-//                    controller: input3controller,
-//                    validator: (value) {
-//                      if (value.isEmpty) {
-//                        return 'Please enter number';
-//                      }
-//                      if (num.tryParse(value) == null) {
-//                        return '"$value" is not a valid number';
-//                      }
-//                      return null;
-//                    },
-//                  ),
-//                ),
-                Row(
-                  children: <Widget>[
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 10.0, left: 20, right: 5),
-                        child: TextFormField(
-                          inputFormatters: [
-                            WhitelistingTextInputFormatter.digitsOnly
-                          ],
-                          decoration: InputDecoration(
-                              labelText: 'Enter meter start state (km)'),
-                          style: TextStyle(fontSize: 14),
-                          keyboardType: TextInputType.number,
-                          controller: input4controller,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter number';
-                            }
-                            if (num.tryParse(value) == null) {
-                              return '"$value" is not a valid number';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 10.0, right: 20, left: 5),
-                        child: TextFormField(
-                          inputFormatters: [
-                            WhitelistingTextInputFormatter.digitsOnly
-                          ],
-                          decoration: InputDecoration(
-                              labelText: 'Enter meter end state (km)'),
-                          style: TextStyle(fontSize: 14),
-                          keyboardType: TextInputType.number,
-                          controller: input5controller,
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Please enter number';
-                            }
-                            if (num.tryParse(value) == null) {
-                              return '"$value" is not a valid number';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
+                Padding(
+                  padding:
+                      const EdgeInsets.only(top: 10.0, left: 20, right: 20),
+                  child: TextFormField(
+                    autofocus: true,
+                    controller: input1controller,
+                    decoration:
+                        InputDecoration(labelText: 'How much you refueled (l)'),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter number';
+                      }
+                      if (num.tryParse(value) == null) {
+                        return '"$value" is not a valid number';
+                      }
+                      return null;
+                    },
+                  ),
                 ),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(top: 10.0, left: 20, right: 20),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                        labelText: 'Enter the price per liter (pln)'),
+                    keyboardType: TextInputType.number,
+                    controller: input2controller,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter number';
+                      }
+                      if (num.tryParse(value) == null) {
+                        return '"$value" is not a valid number';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                formSectionStart(),
+                formSectionEnd(),
+//                Row(
+//                  children: <Widget>[
+//                    Flexible(
+//                      child: Padding(
+//                        padding: EdgeInsets.only(top: 10.0, left: 20, right: 5),
+//                        child: TextFormField(
+//                          inputFormatters: [
+//                            WhitelistingTextInputFormatter.digitsOnly
+//                          ],
+//                          decoration: InputDecoration(
+//                              labelText: 'Enter meter start state (km)'),
+//                          style: TextStyle(fontSize: 14),
+//                          keyboardType: TextInputType.number,
+//                          controller: input4controller,
+//                          validator: (value) {
+//                            if (value.isEmpty) {
+//                              return 'Please enter number';
+//                            }
+//                            if (num.tryParse(value) == null) {
+//                              return '"$value" is not a valid number';
+//                            }
+//                            return null;
+//                          },
+//                        ),
+//                      ),
+//                    ),
+//                    Flexible(
+//                      child: Padding(
+//                        padding: EdgeInsets.only(top: 10.0, right: 20, left: 5),
+//                        child: TextFormField(
+//                          inputFormatters: [
+//                            WhitelistingTextInputFormatter.digitsOnly
+//                          ],
+//                          decoration: InputDecoration(
+//                              labelText: 'Enter meter end state (km)'),
+//                          style: TextStyle(fontSize: 14),
+//                          keyboardType: TextInputType.number,
+//                          controller: input5controller,
+//                          validator: (value) {
+//                            if (value.isEmpty) {
+//                              return 'Please enter number';
+//                            }
+//                            if (num.tryParse(value) == null) {
+//                              return '"$value" is not a valid number';
+//                            }
+//                            return null;
+//                          },
+//                        ),
+//                      ),
+//                    ),
+//                  ],
+//                ),
                 const Divider(
                   height: 5.0,
                 ),
@@ -242,50 +259,115 @@ class FormNrOneState extends State<FormNrOne> {
     );
   }
 
-  Widget formSectionTop() {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
-          child: TextFormField(
-            autofocus: true,
-            controller: input1controller,
-            decoration: InputDecoration(labelText: 'How much you refueled (l)'),
-            keyboardType: TextInputType.number,
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Please enter number';
-              }
-              if (num.tryParse(value) == null) {
-                return '"$value" is not a valid number';
-              }
-              return null;
-            },
+  Widget formSectionStart() {
+    return Padding(
+      padding: EdgeInsets.only(top: 5, left: 20, right: 20, bottom: 5),
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(bottom: 2),
+            child: Text("Last fueling"),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
-          child: TextFormField(
-            decoration:
-                InputDecoration(labelText: 'Enter the price per liter (pln)'),
-            keyboardType: TextInputType.number,
-            controller: input2controller,
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'Please enter number';
-              }
-              if (num.tryParse(value) == null) {
-                return '"$value" is not a valid number';
-              }
-              return null;
-            },
+          Row(
+            children: <Widget>[
+              Flexible(
+                child: Padding(
+                  padding: EdgeInsets.only(right: 5),
+                  child: TextFormField(
+                    inputFormatters: [
+                      WhitelistingTextInputFormatter.digitsOnly
+                    ],
+                    decoration: InputDecoration(labelText: 'Mileage (km)'),
+                    style: TextStyle(fontSize: 14),
+                    keyboardType: TextInputType.number,
+                    controller: input4controller,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter number';
+                      }
+                      if (num.tryParse(value) == null) {
+                        return '"$value" is not a valid number';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              Flexible(
+                // TODO temporary
+                child: Padding(
+                  padding: EdgeInsets.only(left: 5),
+                  child: TextFormField(
+                    inputFormatters: [
+                      WhitelistingTextInputFormatter.digitsOnly
+                    ],
+                    decoration: InputDecoration(labelText: 'Date-time'),
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  Widget formSectionStart() {
-    return Text("aegaeg");
+  Widget formSectionEnd() {
+    return Padding(
+      padding: EdgeInsets.only(top: 10.0, left: 20, right: 20, bottom: 5),
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(bottom: 2),
+            child: Text("Present fueling"),
+          ),
+          Row(
+            children: <Widget>[
+              Flexible(
+                child: Padding(
+                  padding: EdgeInsets.only(right: 5),
+                  child: TextFormField(
+                    inputFormatters: [
+                      WhitelistingTextInputFormatter.digitsOnly
+                    ],
+                    decoration: InputDecoration(labelText: 'Mileage (km)'),
+                    style: TextStyle(fontSize: 14),
+                    keyboardType: TextInputType.number,
+                    controller: input5controller,
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter number';
+                      }
+                      if (num.tryParse(value) == null) {
+                        return '"$value" is not a valid number';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+              Flexible(
+                // TODO temporary
+                child: Padding(
+                  padding: EdgeInsets.only(left: 5),
+                  child: TextFormField(
+                    inputFormatters: [
+                      WhitelistingTextInputFormatter.digitsOnly
+                    ],
+                    decoration: InputDecoration(labelText: 'Date-time'),
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
+
+//  Widget formSectionStart() {
+//    return Text("aegaeg");
+//  }
 }
