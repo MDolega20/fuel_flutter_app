@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SecondPage extends StatelessWidget {
   @override
@@ -41,7 +42,10 @@ class FormNrOneState extends State<FormNrOne> {
     super.initState();
 
     input1controller.addListener(() {
-      liters = double.parse(input1controller.text); // don't work
+//      liters = double.parse(input1controller.text); // don't work
+      liters = double.parse(input1controller.text);
+      print(input1controller.text);
+      print(liters);
     });
     input2controller.addListener(() {
       price = double.parse(input2controller.text); // don't work
@@ -71,6 +75,7 @@ class FormNrOneState extends State<FormNrOne> {
                   child: TextFormField(
                     autofocus: true,
                     controller: input1controller,
+                    inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                     decoration:
                         InputDecoration(labelText: 'How much you refueled (l)'),
                     keyboardType: TextInputType.number,
@@ -89,6 +94,7 @@ class FormNrOneState extends State<FormNrOne> {
                   padding:
                       const EdgeInsets.only(top: 10.0, left: 20, right: 20),
                   child: TextFormField(
+                    inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                     decoration: InputDecoration(
                         labelText: 'Enter the price per liter (pln)'),
                     keyboardType: TextInputType.number,
@@ -108,6 +114,7 @@ class FormNrOneState extends State<FormNrOne> {
                   padding:
                       const EdgeInsets.only(top: 10.0, left: 20, right: 20),
                   child: TextFormField(
+                    inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                     decoration: InputDecoration(
                         labelText: 'Enter distance from last refueling (km)'),
                     keyboardType: TextInputType.number,
@@ -147,7 +154,7 @@ class FormNrOneState extends State<FormNrOne> {
                   children: <Widget>[
                     Text(liters == null
                         ? "Brak danych"
-                        : "liczba litrów: ${liters}"),
+                        : "liczba litrów: $liters"),
                     Text(price == null
                         ? "Brak danych"
                         : "kwota wydana: ${price * liters} pln"),
