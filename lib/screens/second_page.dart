@@ -12,7 +12,7 @@ class SecondPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                "Form page",
+                "Add new",
                 style: TextStyle(fontSize: 30.0, color: Colors.red),
               ),
               FormNrOne(),
@@ -29,29 +29,78 @@ class FormNrOne extends StatefulWidget {
 
 class FormNrOneState extends State<FormNrOne> {
   final _formKey = GlobalKey<FormState>();
-  double liters; // don't work
-  double price; // don't work
-  double distance; // don't work
+
+  double liters;
+  double price;
+  double distance;
+  int meterStart;
+  int meterStop;
 
   TextEditingController input1controller = new TextEditingController();
   TextEditingController input2controller = new TextEditingController();
   TextEditingController input3controller = new TextEditingController();
+  TextEditingController input4controller = new TextEditingController();
+  TextEditingController input5controller = new TextEditingController();
+  TextEditingController input6controller =
+      new TextEditingController(); // TODO not used
+
+  void tryToCalculateDistance(){
+    if(meterStart == null && meterStart != 0 && meterStop == null && meterStop > meterStart){
+      setState(() {
+        int dis = meterStop - meterStart;
+        distance = dis.toDouble();
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
 
     input1controller.addListener(() {
-//      liters = double.parse(input1controller.text); // don't work
-      liters = double.parse(input1controller.text);
-      print(input1controller.text);
-      print(liters);
+      if (input1controller.text != null &&
+          input1controller.text != "" &&
+          liters != double.parse(input1controller.text)) {
+        setState(() {
+          liters = double.parse(input1controller.text);
+        });
+      }
     });
     input2controller.addListener(() {
-      price = double.parse(input2controller.text); // don't work
+      if (input2controller.text != null &&
+          input2controller.text != "" &&
+          price != double.parse(input2controller.text)) {
+        setState(() {
+          price = double.parse(input2controller.text);
+        });
+      }
     });
     input3controller.addListener(() {
-      distance = double.parse(input3controller.text); // don't work
+      if (input3controller.text != null &&
+          input3controller.text != "" &&
+          distance != double.parse(input3controller.text)) {
+        setState(() {
+          distance = double.parse(input3controller.text);
+        });
+      }
+    });
+    input4controller.addListener(() {
+      if (input4controller.text != null &&
+          input4controller.text != "" &&
+          meterStart != int.parse(input4controller.text)) {
+        setState(() {
+          meterStart = int.parse(input4controller.text);
+        });
+      }
+    });
+    input5controller.addListener(() {
+      if (input5controller.text != null &&
+          input5controller.text != "" &&
+          meterStop != int.parse(input5controller.text)) {
+        setState(() {
+          meterStop = int.parse(input5controller.text);
+        });
+      }
     });
   }
 
@@ -75,7 +124,9 @@ class FormNrOneState extends State<FormNrOne> {
                   child: TextFormField(
                     autofocus: true,
                     controller: input1controller,
-                    inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                    inputFormatters: [
+                      WhitelistingTextInputFormatter.digitsOnly
+                    ],
                     decoration:
                         InputDecoration(labelText: 'How much you refueled (l)'),
                     keyboardType: TextInputType.number,
@@ -94,7 +145,9 @@ class FormNrOneState extends State<FormNrOne> {
                   padding:
                       const EdgeInsets.only(top: 10.0, left: 20, right: 20),
                   child: TextFormField(
-                    inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                    inputFormatters: [
+                      WhitelistingTextInputFormatter.digitsOnly
+                    ],
                     decoration: InputDecoration(
                         labelText: 'Enter the price per liter (pln)'),
                     keyboardType: TextInputType.number,
@@ -110,25 +163,83 @@ class FormNrOneState extends State<FormNrOne> {
                     },
                   ),
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 10.0, left: 20, right: 20),
-                  child: TextFormField(
-                    inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-                    decoration: InputDecoration(
-                        labelText: 'Enter distance from last refueling (km)'),
-                    keyboardType: TextInputType.number,
-                    controller: input3controller,
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter number';
-                      }
-                      if (num.tryParse(value) == null) {
-                        return '"$value" is not a valid number';
-                      }
-                      return null;
-                    },
-                  ),
+//                Padding(
+//                  padding:
+//                      const EdgeInsets.only(top: 10.0, left: 20, right: 20),
+//                  child: TextFormField(
+//                    inputFormatters: [
+//                      WhitelistingTextInputFormatter.digitsOnly
+//                    ],
+//                    decoration: InputDecoration(
+//                        labelText: 'Enter distance from last refueling (km)'),
+//                    keyboardType: TextInputType.number,
+//                    controller: input3controller,
+//                    validator: (value) {
+//                      if (value.isEmpty) {
+//                        return 'Please enter number';
+//                      }
+//                      if (num.tryParse(value) == null) {
+//                        return '"$value" is not a valid number';
+//                      }
+//                      return null;
+//                    },
+//                  ),
+//                ),
+                Row(
+                  children: <Widget>[
+                    Flexible(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 10.0, left: 20, right: 5),
+                        child: TextFormField(
+                          inputFormatters: [
+                            WhitelistingTextInputFormatter.digitsOnly
+                          ],
+                          decoration: InputDecoration(
+                              labelText: 'Enter meter start state (km)'),
+                          style: TextStyle(
+                            fontSize: 14
+                          ),
+                          keyboardType: TextInputType.number,
+                          controller: input4controller,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter number';
+                            }
+                            if (num.tryParse(value) == null) {
+                              return '"$value" is not a valid number';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 10.0, right: 20, left: 5),
+                        child: TextFormField(
+                          inputFormatters: [
+                            WhitelistingTextInputFormatter.digitsOnly
+                          ],
+                          decoration: InputDecoration(
+                              labelText: 'Enter meter end state (km)'),
+                          style: TextStyle(
+                              fontSize: 14
+                          ),
+                          keyboardType: TextInputType.number,
+                          controller: input5controller,
+                          validator: (value) {
+                            if (value.isEmpty) {
+                              return 'Please enter number';
+                            }
+                            if (num.tryParse(value) == null) {
+                              return '"$value" is not a valid number';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const Divider(
                   height: 5.0,
