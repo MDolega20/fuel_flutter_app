@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 //import 'package:intl/intl.dart';
 //import 'package:datetime_picker_formfield/datetime_picker_formfield.dart'; // TODO DATETIME FORM
 
 class PageAddData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "Add new",
-                style: TextStyle(fontSize: 30.0, color: Colors.red),
-              ),
-              FormNrOne(),
-            ]),
-      ),
-    );
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            "Add new",
+            style: TextStyle(fontSize: 30.0, color: Colors.red),
+          ),
+          FormNrOne(),
+        ]);
   }
 }
 
@@ -31,7 +27,6 @@ class FormNrOne extends StatefulWidget {
 
 class FormNrOneState extends State<FormNrOne> {
   final _formKey = GlobalKey<FormState>();
-//  final format = DateFormat("yyyy-MM-dd");
 
   double liters;
   double price;
@@ -243,7 +238,7 @@ class FormNrOneState extends State<FormNrOne> {
 //                          lastDate: DateTime(2100));
 //                    },
 //                  ),
-                  TextFormField(
+                      TextFormField(
                     inputFormatters: [
                       WhitelistingTextInputFormatter.digitsOnly
                     ],
