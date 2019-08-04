@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_2/screens/second_page.dart';
+import 'package:flutter_app_2/screens/page_add_data.dart';
 
 class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class HomeBody extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SecondPage()),
+                MaterialPageRoute(builder: (context) => PageAddData()),
               );
             },
             color: Colors.red,
