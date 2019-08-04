@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_2/screens/page_add_data.dart';
+import 'package:flutter_app_2/screens/page_history.dart';
+import 'package:flutter_app_2/screens/page_stats.dart';
 import 'package:flutter_app_2/screens/start.dart';
 
 class MainTabs extends StatelessWidget {
@@ -34,8 +36,8 @@ class MainTabs extends StatelessWidget {
           body: TabBarView(
             children: [
               PageAddData(),
-              Icon(Icons.directions_transit),
-              Icon(Icons.directions_bike),
+              PageHistory(),
+              PageStatistics(),
             ],
           ),
         ),
