@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart'; // TODO DATETIME FORM
 
 class PageAddData extends StatelessWidget {
   @override
@@ -155,11 +153,11 @@ class FormAddState extends State<FormAdd> {
 //                    lastDate: DateTime(2100));
 //              },
 //            ),
-//            TextFormField(
-////              autofocus: true,
-//              controller: inputControllerDate,
-//              decoration: InputDecoration(labelText: 'Date'),
-//            ),
+            TextFormField(
+//              autofocus: true,
+              controller: inputControllerDate,
+              decoration: InputDecoration(labelText: 'Date'),
+            ),
           ),
         ),
         Flexible(
