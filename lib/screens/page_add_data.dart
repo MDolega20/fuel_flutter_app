@@ -7,25 +7,27 @@ import 'package:flutter/services.dart';
 class PageAddData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+    return ListView( // Column first
+//        mainAxisAlignment: MainAxisAlignment.center,
+//        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Text(
-            "Add new",
-            style: TextStyle(fontSize: 30.0, color: Colors.red),
-          ),
-          FormNrOne(),
+//          Center(
+//            child: Text(
+//              "Add new",
+//              style: TextStyle(fontSize: 30.0, color: Colors.red),
+//            ),
+//          ),
+          FormAdd(),
         ]);
   }
 }
 
-class FormNrOne extends StatefulWidget {
+class FormAdd extends StatefulWidget {
   @override
-  FormNrOneState createState() => FormNrOneState();
+  FormAddState createState() => FormAddState();
 }
 
-class FormNrOneState extends State<FormNrOne> {
+class FormAddState extends State<FormAdd> {
   final _formKey = GlobalKey<FormState>();
 
   double liters;
@@ -36,11 +38,10 @@ class FormNrOneState extends State<FormNrOne> {
 
   TextEditingController input1controller = new TextEditingController();
   TextEditingController input2controller = new TextEditingController();
-  TextEditingController input3controller = new TextEditingController();
   TextEditingController input4controller = new TextEditingController();
   TextEditingController input5controller = new TextEditingController();
   TextEditingController input6controller =
-      new TextEditingController(); // TODO not used
+      new TextEditingController();
 
   void tryToCalculateDistance() {
     if (meterStart != null && meterStart != 0 && meterStop != null) {
@@ -79,15 +80,6 @@ class FormNrOneState extends State<FormNrOne> {
         });
       }
     });
-    input3controller.addListener(() {
-      if (input3controller.text != null &&
-          input3controller.text != "" &&
-          distance != double.parse(input3controller.text)) {
-        setState(() {
-          distance = double.parse(input3controller.text);
-        });
-      }
-    });
     input4controller.addListener(() {
       if (input4controller.text != null &&
           input4controller.text != "" &&
@@ -113,7 +105,8 @@ class FormNrOneState extends State<FormNrOne> {
   void dispose() {
     input1controller.dispose();
     input2controller.dispose();
-    input3controller.dispose();
+    input4controller.dispose();
+    input5controller.dispose();
     super.dispose();
   }
 
