@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_2/screens/main.dart';
+import 'package:flutter_app_2/screens/app.dart';
 //import 'package:flutter_app_2/screens/page_add_data.dart';
 
 // TODo CHECK THIS https://flutter.dev/docs/catalog/samples/basic-app-bar
@@ -42,7 +42,7 @@ class StartPageBody extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MainTabs()),
+                MaterialPageRoute(builder: (context) => App()),
               );
             },
             color: Colors.red,

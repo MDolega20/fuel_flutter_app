@@ -4,11 +4,10 @@ import 'package:flutter_app_2/screens/page_history.dart';
 import 'package:flutter_app_2/screens/page_stats.dart';
 import 'package:flutter_app_2/screens/start.dart';
 
-class MainTabs extends StatelessWidget {
+class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: DefaultTabController(
+    return DefaultTabController(
         length: 3,
         child: Scaffold(
           appBar: AppBar(
@@ -41,7 +40,6 @@ class MainTabs extends StatelessWidget {
             ],
           ),
         ),
-      ),
     );
   }
 }
