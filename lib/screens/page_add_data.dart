@@ -7,14 +7,7 @@ import 'package:flutter/services.dart';
 class PageAddData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-        children: <Widget>[
-//          Center(
-//            child: Text(
-//              "Add new",
-//              style: TextStyle(fontSize: 30.0, color: Colors.red),
-//            ),
-//          ),
+    return ListView(children: <Widget>[
       FormAdd(),
     ]);
   }
@@ -33,7 +26,7 @@ class FormAddState extends State<FormAdd> {
   double cost;
   int odometr;
 
-  bool fullFueling;
+  bool fullFueling = true;
 
   var fuelingDate;
   var fuelingTime;
@@ -118,64 +111,8 @@ class FormAddState extends State<FormAdd> {
                   fromSectionLiters(),
                   SizedBox(height: 5),
                   formSectionFullFueling(),
-//                Padding(
-//                  padding:
-//                      const EdgeInsets.only(top: 10.0, left: 20, right: 20),
-//                  child: TextFormField(
-//                    autofocus: true,
-//                    controller: input1controller,
-//                    decoration:
-//                        InputDecoration(labelText: 'How much you refueled (l)'),
-//                    keyboardType: TextInputType.number,
-//                    validator: (value) {
-//                      if (value.isEmpty) {
-//                        return 'Please enter number';
-//                      }
-//                      if (num.tryParse(value) == null) {
-//                        return '"$value" is not a valid number';
-//                      }
-//                      return null;
-//                    },
-//                  ),
-//                ),
-//                Padding(
-//                  padding:
-//                      const EdgeInsets.only(top: 10.0, left: 20, right: 20),
-//                  child: TextFormField(
-//                    decoration: InputDecoration(
-//                        labelText: 'Enter the price per liter (pln)'),
-//                    keyboardType: TextInputType.number,
-//                    controller: input2controller,
-//                    validator: (value) {
-//                      if (value.isEmpty) {
-//                        return 'Please enter number';
-//                      }
-//                      if (num.tryParse(value) == null) {
-//                        return '"$value" is not a valid number';
-//                      }
-//                      return null;
-//                    },
-//                  ),
-//                ),
-//                formSectionStart(),
-//                formSectionEnd(),
-                  const Divider(
-                    height: 5.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: RaisedButton(
-                      onPressed: () {
-                        // Validate returns true if the form is valid, or false otherwise.
-                        if (_formKey.currentState.validate()) {
-                          // If the form is valid, display a Snackbar.
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text('Processing Data')));
-                        }
-                      },
-                      child: Text('Submit'),
-                    ),
-                  ),
+                  SizedBox(height: 5),
+                  fromSubmit()
                 ],
               ),
             )),
@@ -183,132 +120,20 @@ class FormAddState extends State<FormAdd> {
     );
   }
 
-//  Widget formSectionStart() {
-//    return Padding(
-//      padding: EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 5),
-//      child: Column(
-//        children: <Widget>[
-//          Text("Last fueling"),
-//          Row(
-//            children: <Widget>[
-//              Flexible(
-//                child: Padding(
-//                  padding: EdgeInsets.only(right: 5),
-//                  child: TextFormField(
-//                    inputFormatters: [
-//                      WhitelistingTextInputFormatter.digitsOnly
-//                    ],
-//                    decoration: InputDecoration(labelText: 'Mileage (km)'),
-//                    style: TextStyle(fontSize: 14),
-//                    keyboardType: TextInputType.number,
-//                    controller: input4controller,
-//                    validator: (value) {
-//                      if (value.isEmpty) {
-//                        return 'Please enter number';
-//                      }
-//                      if (num.tryParse(value) == null) {
-//                        return '"$value" is not a valid number';
-//                      }
-//                      return null;
-//                    },
-//                  ),
-//                ),
-//              ),
-//              Flexible(
-//                // TODO temporary
-//                child: Padding(
-//                  padding: EdgeInsets.only(left: 5),
-//                  child:
-////                  DateTimeField(
-////                    format: format,
-////                    onShowPicker: (context, currentValue) {
-////                      return showDatePicker(
-////                          context: context,
-////                          firstDate: DateTime(1900),
-////                          initialDate: currentValue ?? DateTime.now(),
-////                          lastDate: DateTime(2100));
-////                    },
-////                  ),
-//                  TextFormField(
-//                    inputFormatters: [
-//                      WhitelistingTextInputFormatter.digitsOnly
-//                    ],
-//                    decoration: InputDecoration(labelText: 'Date-time'),
-//                    style: TextStyle(fontSize: 14),
-//                  ),
-//                ),
-//              ),
-//            ],
-//          ),
-//        ],
-//      ),
+  // Testing summary
+//  Widget summary() {
+//    return Column(
+//      children: <Widget>[
+//        Text(liters == null ? "Brak danych" : "liczba litrów: $liters"),
+//        Text(price == null
+//            ? "Brak danych"
+//            : "kwota wydana: ${price * liters} pln"),
+//        Text(distance == null
+//            ? "Brak danych"
+//            : "cena za kilometr: ${price * liters / distance} pln"),
+//      ],
 //    );
 //  }
-//
-//  Widget formSectionEnd() {
-//    return Padding(
-//      padding: EdgeInsets.only(top: 10.0, left: 20, right: 20, bottom: 5),
-//      child: Column(
-//        children: <Widget>[
-//          Text("Present fueling"),
-//          Row(
-//            children: <Widget>[
-//              Flexible(
-//                child: Padding(
-//                  padding: EdgeInsets.only(right: 5),
-//                  child: TextFormField(
-//                    inputFormatters: [
-//                      WhitelistingTextInputFormatter.digitsOnly
-//                    ],
-//                    decoration: InputDecoration(labelText: 'Mileage (km)'),
-//                    style: TextStyle(fontSize: 14),
-//                    keyboardType: TextInputType.number,
-//                    controller: input5controller,
-//                    validator: (value) {
-//                      if (value.isEmpty) {
-//                        return 'Please enter number';
-//                      }
-//                      if (num.tryParse(value) == null) {
-//                        return '"$value" is not a valid number';
-//                      }
-//                      return null;
-//                    },
-//                  ),
-//                ),
-//              ),
-//              Flexible(
-//                // TODO temporary
-//                child: Padding(
-//                  padding: EdgeInsets.only(left: 5),
-//                  child: TextFormField(
-//                    inputFormatters: [
-//                      WhitelistingTextInputFormatter.digitsOnly
-//                    ],
-//                    decoration: InputDecoration(labelText: 'Date-time'),
-//                    style: TextStyle(fontSize: 14),
-//                  ),
-//                ),
-//              ),
-//            ],
-//          ),
-//        ],
-//      ),
-//    );
-//  }
-
-  Widget summary() {
-    return Column(
-      children: <Widget>[
-        Text(liters == null ? "Brak danych" : "liczba litrów: $liters"),
-        Text(price == null
-            ? "Brak danych"
-            : "kwota wydana: ${price * liters} pln"),
-        Text(distance == null
-            ? "Brak danych"
-            : "cena za kilometr: ${price * liters / distance} pln"),
-      ],
-    );
-  }
 
   Widget formSectionDateTime() {
     // TODO must do date and time inputs
@@ -388,11 +213,28 @@ class FormAddState extends State<FormAdd> {
       children: <Widget>[
         Text("Full fueling", style: TextStyle(fontSize: 18)),
         Checkbox(
-            value: true,
+            value: fullFueling,
             onChanged: (bool value) {
-              // TODO no controller :/
+              setState(() {
+                fullFueling = value;
+              });
             })
       ],
+    );
+  }
+
+  Widget fromSubmit() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: RaisedButton(
+        onPressed: () {
+          if (_formKey.currentState.validate()) {
+            Scaffold.of(context)
+                .showSnackBar(SnackBar(content: Text('Processing Data')));
+          }
+        },
+        child: Text('Submit'),
+      ),
     );
   }
 }
