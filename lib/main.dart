@@ -6,8 +6,3 @@ main() {
     home: StartPage(),
   ));
 }
-
-
-
-
-
