@@ -1,7 +1,10 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app_2/model/fuel_list_model.dart';
+import 'package:flutter_app_2/model/fueling.dart';
 import 'package:intl/intl.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 class PageAddData extends StatelessWidget {
   @override
@@ -19,6 +22,7 @@ class FormAdd extends StatefulWidget {
 
 class FormAddState extends State<FormAdd> {
   final _formKey = GlobalKey<FormState>();
+  BuildContext _context;
 
   double liters;
   double price;
@@ -27,17 +31,18 @@ class FormAddState extends State<FormAdd> {
 
   bool fullFueling = true;
 
-  var fuelingDate;
-  var fuelingTime;
+  DateTime fuelingDateTime;
+  DateTime createdDateTime = new DateTime.now();
 
   double distance; // TODO nowDistance - prevDistance
 
-  TextEditingController inputControllerDate = new TextEditingController();
-  TextEditingController inputControllerTime = new TextEditingController();
   TextEditingController inputControllerOdometr = new TextEditingController();
   TextEditingController inputControllerPrice = new TextEditingController();
   TextEditingController inputControllerCost = new TextEditingController();
   TextEditingController inputControllerLiters = new TextEditingController();
+
+  DateTime dateStart = new DateTime.now();
+  DateTime timeStart = new DateTime.now();
 
   @override
   void initState() {
@@ -88,10 +93,27 @@ class FormAddState extends State<FormAdd> {
     inputControllerPrice.dispose();
     inputControllerCost.dispose();
     inputControllerLiters.dispose();
-    inputControllerDate.dispose();
-    inputControllerTime.dispose();
 
     super.dispose();
+  }
+
+  void _compareDateTime() {
+    if (dateStart != null && timeStart != null) {
+      setState(() {
+        fuelingDateTime = dateStart.add(
+            new Duration(hours: timeStart.hour, minutes: timeStart.minute));
+      });
+    }
+  }
+
+  void _addPurchase() async {
+//    String name = await showDialog(
+//        context: _context, builder: (BuildContext context) => PurchaseDialog());
+
+    if (liters == null) return;
+
+    ScopedModel.of<FuelingListModel>(_context).add(Fueling(liters, price, cost,
+        odometr, fullFueling, fuelingDateTime, createdDateTime));
   }
 
   Widget build(BuildContext context) {
@@ -100,7 +122,7 @@ class FormAddState extends State<FormAdd> {
         Form(
             key: _formKey,
             child: Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20),
+              padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
               child: Column(
                 children: <Widget>[
                   formSectionDateTime(),
@@ -111,7 +133,9 @@ class FormAddState extends State<FormAdd> {
                   SizedBox(height: 5),
                   formSectionFullFueling(),
                   SizedBox(height: 5),
-                  fromSubmit()
+                  fromSubmit(),
+                  SizedBox(height: 25),
+                  testing()
                 ],
               ),
             )),
@@ -120,52 +144,83 @@ class FormAddState extends State<FormAdd> {
   }
 
   // Testing summary
-//  Widget summary() {
-//    return Column(
-//      children: <Widget>[
-//        Text(liters == null ? "Brak danych" : "liczba litrów: $liters"),
-//        Text(price == null
-//            ? "Brak danych"
-//            : "kwota wydana: ${price * liters} pln"),
-//        Text(distance == null
-//            ? "Brak danych"
-//            : "cena za kilometr: ${price * liters / distance} pln"),
-//      ],
-//    );
-//  }
+  Widget testing() {
+    return Column(
+      children: <Widget>[
+        Text(liters == null ? "liters" : "liters: $liters"),
+        Text(price == null ? "price" : "price: $price"),
+        Text(cost == null ? "cost" : "cost: $cost"),
+        Text(odometr == null ? "odometr" : "odometr: $odometr"),
+        Text(fullFueling == null ? "fullFueling" : "fullFueling: $fullFueling"),
+        Text(fuelingDateTime == null ? "fuelingDateTime" : "fuelingDateTime: $fuelingDateTime"),
+        Text(createdDateTime == null ? "createdDateTime" : "createdDateTime: $createdDateTime"),
+      ],
+    );
+  }
 
   Widget formSectionDateTime() {
-    // TODO must do date and time inputs
-    final dateFormat = DateFormat("yyyy-MM-dd");
+    final formatDate = DateFormat("yyyy-MM-dd");
+    final formatTime = DateFormat("HH:mm");
+    final initialValue = DateTime.now();
 
     return Row(
       children: <Widget>[
         Flexible(
           child: Padding(
             padding: const EdgeInsets.only(right: 5),
-            child:
-            DateTimePickerFormField(
-              format: dateFormat,
-              enabled: false,
-              onChanged: (date) {
-                Scaffold
-                    .of(context)
-                    .showSnackBar(SnackBar(content: Text('$date')));
+            child: DateTimeField(
+              format: formatDate,
+              onShowPicker: (context, currentValue) {
+                return showDatePicker(
+                    context: context,
+                    firstDate: DateTime(1900),
+                    initialDate: currentValue ?? DateTime.now(),
+                    lastDate: DateTime(2100));
+              },
+              validator: (date) => date == null ? 'Invalid date' : null,
+              initialValue: dateStart,
+              onChanged: (date) => {
+                _compareDateTime(),
+                setState(() {
+                  dateStart = date;
+                })
+              },
+              onSaved: (date) => {
+                _compareDateTime(),
+                setState(() {
+                  dateStart = date;
+                })
               },
             ),
-//            TextFormField(
-//              autofocus: true,
-//              controller: inputControllerDate,
-//              decoration: InputDecoration(labelText: 'Date'),
-//            ),
           ),
         ),
         Flexible(
           child: Padding(
             padding: const EdgeInsets.only(left: 5),
-            child: TextFormField(
-              controller: inputControllerTime,
-              decoration: InputDecoration(labelText: 'Time'),
+            child: DateTimeField(
+              format: formatTime,
+              onShowPicker: (context, currentValue) async {
+                final time = await showTimePicker(
+                  context: context,
+                  initialTime:
+                      TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                );
+                return DateTimeField.convert(time);
+              },
+              validator: (date) => date == null ? 'Invalid date' : null,
+              initialValue: timeStart,
+              onChanged: (date) => {
+                _compareDateTime(),
+                setState(() {
+                  timeStart = date;
+                })
+              },
+              onSaved: (date) => {
+                _compareDateTime(),
+                setState(() {
+                  timeStart = date;
+                })
+              },
             ),
           ),
         ),
@@ -242,6 +297,7 @@ class FormAddState extends State<FormAdd> {
           if (_formKey.currentState.validate()) {
             Scaffold.of(context)
                 .showSnackBar(SnackBar(content: Text('Processing Data')));
+            _addPurchase();
           }
         },
         child: Text('Submit'),

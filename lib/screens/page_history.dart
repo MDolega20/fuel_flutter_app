@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class PageHistory extends StatelessWidget {
+  BuildContext _context;
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
