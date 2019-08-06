@@ -106,6 +106,7 @@ class FormAddState extends State<FormAdd> {
     }
   }
 
+  // TODO new
   void _addPurchase() async {
 //    String name = await showDialog(
 //        context: _context, builder: (BuildContext context) => PurchaseDialog());
@@ -152,8 +153,12 @@ class FormAddState extends State<FormAdd> {
         Text(cost == null ? "cost" : "cost: $cost"),
         Text(odometr == null ? "odometr" : "odometr: $odometr"),
         Text(fullFueling == null ? "fullFueling" : "fullFueling: $fullFueling"),
-        Text(fuelingDateTime == null ? "fuelingDateTime" : "fuelingDateTime: $fuelingDateTime"),
-        Text(createdDateTime == null ? "createdDateTime" : "createdDateTime: $createdDateTime"),
+        Text(fuelingDateTime == null
+            ? "fuelingDateTime"
+            : "fuelingDateTime: $fuelingDateTime"),
+        Text(createdDateTime == null
+            ? "createdDateTime"
+            : "createdDateTime: $createdDateTime"),
       ],
     );
   }
@@ -180,16 +185,22 @@ class FormAddState extends State<FormAdd> {
               validator: (date) => date == null ? 'Invalid date' : null,
               initialValue: dateStart,
               onChanged: (date) => {
-                _compareDateTime(),
-                setState(() {
-                  dateStart = date;
-                })
+                if (dateStart != date)
+                  {
+                    setState(() {
+                      dateStart = date;
+                    }),
+                    _compareDateTime()
+                  }
               },
               onSaved: (date) => {
-                _compareDateTime(),
-                setState(() {
-                  dateStart = date;
-                })
+                if (dateStart != date)
+                  {
+                    setState(() {
+                      dateStart = date;
+                    }),
+                    _compareDateTime()
+                  }
               },
             ),
           ),
@@ -210,16 +221,22 @@ class FormAddState extends State<FormAdd> {
               validator: (date) => date == null ? 'Invalid date' : null,
               initialValue: timeStart,
               onChanged: (date) => {
-                _compareDateTime(),
-                setState(() {
-                  timeStart = date;
-                })
+                if (timeStart != date)
+                  {
+                    setState(() {
+                      timeStart = date;
+                    }),
+                    _compareDateTime()
+                  }
               },
               onSaved: (date) => {
-                _compareDateTime(),
-                setState(() {
-                  timeStart = date;
-                })
+                if (timeStart != date)
+                  {
+                    setState(() {
+                      timeStart = date;
+                    }),
+                    _compareDateTime()
+                  }
               },
             ),
           ),

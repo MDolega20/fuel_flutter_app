@@ -14,7 +14,7 @@ class FuelingListItem extends StatelessWidget {
   Widget build(BuildContext context) {
 //    final background =
 //    purchase.purchased ? Colors.green.shade100 : Colors.white;
-  final background = Colors.green.shade100;
+    final background = Colors.green.shade100;
 
     return Container(
         height: 60,
@@ -24,11 +24,9 @@ class FuelingListItem extends StatelessWidget {
                   color: background,
                   child: InkWell(
 //                      onTap: onTap,
-                      child:
-                        Expanded(
-                            child: Text(purchase.odometr.toString(),
-                                style: const TextStyle(fontSize: 16)))
-                      ))),
+                      child: Expanded(
+                          child: Text(purchase.odometr.toString(),
+                              style: const TextStyle(fontSize: 16)))))),
           Material(
               color: background,
               child: InkWell(
