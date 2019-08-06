@@ -1,3 +1,4 @@
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -135,7 +136,7 @@ class FormAddState extends State<FormAdd> {
 
   Widget formSectionDateTime() {
     // TODO must do date and time inputs
-    final format = DateFormat("yyyy-MM-dd");
+    final dateFormat = DateFormat("yyyy-MM-dd");
 
     return Row(
       children: <Widget>[
@@ -143,21 +144,20 @@ class FormAddState extends State<FormAdd> {
           child: Padding(
             padding: const EdgeInsets.only(right: 5),
             child:
-//            DateTimeField( // TODO this is not working
-//              format: format,
-//              onShowPicker: (context, currentValue) {
-//                return showDatePicker(
-//                    context: context,
-//                    firstDate: DateTime(1900),
-//                    initialDate: currentValue ?? DateTime.now(),
-//                    lastDate: DateTime(2100));
-//              },
-//            ),
-            TextFormField(
-//              autofocus: true,
-              controller: inputControllerDate,
-              decoration: InputDecoration(labelText: 'Date'),
+            DateTimePickerFormField(
+              format: dateFormat,
+              enabled: false,
+              onChanged: (date) {
+                Scaffold
+                    .of(context)
+                    .showSnackBar(SnackBar(content: Text('$date')));
+              },
             ),
+//            TextFormField(
+//              autofocus: true,
+//              controller: inputControllerDate,
+//              decoration: InputDecoration(labelText: 'Date'),
+//            ),
           ),
         ),
         Flexible(
