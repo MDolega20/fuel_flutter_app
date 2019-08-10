@@ -4,8 +4,8 @@ import 'package:scoped_model/scoped_model.dart';
 class FuelingListModel extends Model {
   final List<Fueling> _fuelings = [];
 
-  List<Fueling> get fuelings =>
-      _fuelings.where((fueling) => !fueling.isDeleted).toList();
+//  List<Fueling> get fuelings =>
+//      _fuelings.where((fueling) => !fueling.isDeleted).toList();
 
   final Function(FuelingListModel) onSave;
 

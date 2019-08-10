@@ -3,10 +3,10 @@ import 'package:flutter_app_2/model/fueling.dart';
 
 class FuelingListItem extends StatelessWidget {
   const FuelingListItem(
-      {Key key, @required this.purchase, this.onTap, this.onDelete})
+      {Key key, @required this.fueling, this.onTap, this.onDelete})
       : super(key: key);
 
-  final Fueling purchase;
+  final Fueling fueling;
   final Fueling onTap;
   final Fueling onDelete;
 
@@ -25,7 +25,7 @@ class FuelingListItem extends StatelessWidget {
                   child: InkWell(
 //                      onTap: onTap,
                       child: Expanded(
-                          child: Text(purchase.odometr.toString(),
+                          child: Text(fueling.odometr.toString(),
                               style: const TextStyle(fontSize: 16)))))),
           Material(
               color: background,

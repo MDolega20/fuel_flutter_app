@@ -1,4 +1,3 @@
-//import 'package:fast_shopping/model/purchase.dart';
 import 'dart:convert';
 
 import 'package:flutter_app_2/model/fueling.dart';
