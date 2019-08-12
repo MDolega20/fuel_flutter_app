@@ -16,6 +16,8 @@ class Persistor {
       return deserialized.map((obj) => Fueling.fromJson(obj)).toList();
     }
 
+    print([]);
+
     return [];
   }
 
