@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_2/model/fueling.dart';
 
 class FuelingListItem extends StatelessWidget {
+  final Fueling itemData;
+  final Fueling onTap;
+  final Fueling onDelete;
+
   const FuelingListItem(
       {Key key, @required this.itemData, this.onTap, this.onDelete})
       : super(key: key);
 
-  final Fueling itemData;
-  final Fueling onTap;
-  final Fueling onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class FuelingListItem extends StatelessWidget {
                   child: InkWell(
 //                      onTap: onTap,
                       child: Expanded(
-                          child: Text(fueling.odometr.toString(),
+                          child: Text(itemData.odometr.toString(),
                               style: const TextStyle(fontSize: 16)))))),
           Material(
               color: background,
