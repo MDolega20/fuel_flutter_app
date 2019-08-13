@@ -2,7 +2,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_2/model/fuel_list_model.dart';
-import 'package:flutter_app_2/model/fueling.dart';
+import 'package:flutter_app_2/widgets/fueling.dart';
 import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
 

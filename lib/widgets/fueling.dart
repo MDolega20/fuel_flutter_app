@@ -1,3 +1,4 @@
+
 class Fueling with Deletable {
   Fueling(
       this.liters,
@@ -36,8 +37,8 @@ class Fueling with Deletable {
           'price': price,
           'odometr': odometr,
           'fullFueling': fullFueling,
-          'fuelingDateTime': fuelingDateTime,
-          'createdDateTime': createdDateTime
+          'fuelingDateTime': fuelingDateTime.toString(),
+          'createdDateTime': createdDateTime.toString()
         };
 }
 

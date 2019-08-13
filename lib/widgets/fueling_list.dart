@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_2/model/fueling.dart';
+import 'package:flutter_app_2/widgets/fueling.dart';
 import 'package:flutter_app_2/persistor.dart';
 import 'package:flutter_app_2/widgets/fueling_list_item.dart';
 
@@ -17,6 +17,16 @@ class _FuelingListState extends State<FuelingList> {
   void initState() {
     super.initState();
     _load();
+//    _test();
+    _save();
+  }
+
+  void _test(){
+    setState(() => _fuelings.add(new Fueling(100, 500, 200, 3542353, true, DateTime.now(),  DateTime.now())));
+    setState(() => _fuelings.add(new Fueling(100, 500, 200, 3542353, true, DateTime.now(),  DateTime.now())));
+    setState(() => _fuelings.add(new Fueling(100, 500, 200, 3542353, true, DateTime.now(),  DateTime.now())));
+    setState(() => _fuelings.add(new Fueling(100, 500, 200, 3542353, true, DateTime.now(),  DateTime.now())));
+    setState(() => _fuelings.add(new Fueling(100, 500, 200, 3542353, true, DateTime.now(),  DateTime.now())));
   }
 
   void _save() => _presisitor.save(_fuelings);
@@ -46,7 +56,7 @@ class _FuelingListState extends State<FuelingList> {
               key: ObjectKey(
                   _fuelings[i]),
               itemData: _fuelings[i],
-              onTap: () => _deleteItem(context, i), // TODO this dont work
+//              onTap: () => _deleteItem(context, i),
               onDelete: () => _deleteItem(context, i),
             )
     ) : _buildPlaceholder(context);
@@ -56,7 +66,7 @@ class _FuelingListState extends State<FuelingList> {
     return Center(
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           SizedBox(height: 24.0),
-          Text("PlaceFolDer")
+          Text("Brak danych")
         ]));
   }
 }

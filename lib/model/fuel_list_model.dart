@@ -1,4 +1,4 @@
-import 'package:flutter_app_2/model/fueling.dart';
+import 'package:flutter_app_2/widgets/fueling.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class FuelingListModel extends Model {

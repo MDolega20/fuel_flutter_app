@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Mon Aug 12 07:26:15 CEST 2019
+#Tue Aug 13 11:27:17 CEST 2019
 4.path=flutter_assets/kernel_blob.bin
 8.set=NATIVE_RESOURCE
 6.path=flutter_assets/LICENSE
