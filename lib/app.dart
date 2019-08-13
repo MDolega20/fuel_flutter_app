@@ -5,6 +5,7 @@ import 'package:flutter_app_2/screens/page_stats.dart';
 import 'package:flutter_app_2/screens/start.dart';
 
 class FuelApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -29,7 +30,6 @@ class FuelApp extends StatelessWidget {
                 );
               },
             ),
-//            menu()
           ],
         ),
         body: TabBarView(

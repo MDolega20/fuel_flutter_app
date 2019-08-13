@@ -20,6 +20,7 @@ class Fueling with Deletable {
   DateTime fuelingDateTime;
   DateTime createdDateTime;
 
+
   Fueling.fromJson(Map<String, dynamic> json)
       : liters = json['liters'],
         cost = json['cost'],

@@ -6,16 +6,16 @@ class FuelingListItem extends StatefulWidget {
   _FuelingListItemState createState() => _FuelingListItemState();
 
   final itemData;
-  final onTap;
+  final prevItemData;
   final onDelete;
 
   const FuelingListItem(
-      {Key key, @required this.itemData, this.onTap, this.onDelete})
+      {Key key, @required this.itemData, this.prevItemData, this.onDelete})
       : super(key: key);
 }
 
 class _FuelingListItemState extends State<FuelingListItem> {
-  bool _detailsDisplayed = true;
+  bool _detailsDisplayed = false;
 
   void _toggle() {
     setState(() {
@@ -90,6 +90,13 @@ class _FuelingListItemState extends State<FuelingListItem> {
   }
 
   Widget _details() {
+    var textStyle = TextStyle(fontSize: 15);
+    double litersper100;
+    if(widget.prevItemData != null){ //TODO
+      litersper100 = (widget.itemData.odometr - widget.prevItemData.odometr) / widget.itemData.liters * 100;
+    }
+
+
     return Column(
       children: <Widget>[
         Row(
@@ -100,6 +107,26 @@ class _FuelingListItemState extends State<FuelingListItem> {
                 "assets/carnister.png",
                 height: 25,
               ),
+            ),
+            Text(
+              "${widget.itemData.liters.toString()} liters",
+              style: textStyle,
+            ),
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Container(
+              width: 35,
+              child: Image.asset(
+                "assets/chart.png",
+                height: 25,
+              ),
+            ),
+            Text(
+              litersper100 != null ?
+              "${litersper100.toString()} l/100km" : "not enough data l/100km",
+              style: textStyle,
             ),
           ],
         )

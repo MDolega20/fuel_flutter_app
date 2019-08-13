@@ -2,6 +2,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_2/model/fuel_list_model.dart';
+import 'package:flutter_app_2/persistor.dart';
 import 'package:flutter_app_2/widgets/fueling.dart';
 import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -17,12 +18,14 @@ class PageAddData extends StatelessWidget {
 
 class FormAdd extends StatefulWidget {
   @override
-  FormAddState createState() => FormAddState();
+  _FormAddState createState() => _FormAddState();
 }
 
-class FormAddState extends State<FormAdd> {
+class _FormAddState extends State<FormAdd> {
+  List<Fueling> _fuelings = [];
+  Persistor _presisitor = Persistor();
+
   final _formKey = GlobalKey<FormState>();
-  BuildContext _context;
 
   double liters;
   double price;
@@ -33,8 +36,6 @@ class FormAddState extends State<FormAdd> {
 
   DateTime fuelingDateTime;
   DateTime createdDateTime = new DateTime.now();
-
-  double distance; // TODO nowDistance - prevDistance
 
   TextEditingController inputControllerOdometr = new TextEditingController();
   TextEditingController inputControllerPrice = new TextEditingController();
@@ -47,7 +48,37 @@ class FormAddState extends State<FormAdd> {
   @override
   void initState() {
     super.initState();
+    _load();
+    _controllerListeners();
+    _compareDateTime();
+  }
 
+  void _save() => _presisitor.save(_fuelings);
+
+  void _load() =>
+      _presisitor.load().then((data) => setState(() => _fuelings = data));
+
+  void _addItem() async {
+    if (liters != null &&
+        price != null &&
+        cost != null &&
+        odometr != null &&
+        fuelingDateTime != null &&
+        createdDateTime != null) {
+
+      await setState(() {
+        _fuelings.add(Fueling(liters, price, cost, odometr, fullFueling,
+            fuelingDateTime, createdDateTime));
+      });
+    } else {
+      Scaffold.of(context).showSnackBar(SnackBar(content: Text('Error')));
+    }
+
+    await _save();
+    await Scaffold.of(context).showSnackBar(SnackBar(content: Text('Saved')));
+  }
+
+  void _controllerListeners() {
     inputControllerOdometr.addListener(() {
       if (inputControllerOdometr.text != null &&
           inputControllerOdometr.text != "" &&
@@ -84,17 +115,6 @@ class FormAddState extends State<FormAdd> {
         });
       }
     });
-
-    // TODO date and time
-  }
-
-  void dispose() {
-    inputControllerOdometr.dispose();
-    inputControllerPrice.dispose();
-    inputControllerCost.dispose();
-    inputControllerLiters.dispose();
-
-    super.dispose();
   }
 
   void _compareDateTime() {
@@ -106,15 +126,35 @@ class FormAddState extends State<FormAdd> {
     }
   }
 
-  // TODO new
-  void _addPurchase() async {
-//    String name = await showDialog(
-//        context: _context, builder: (BuildContext context) => PurchaseDialog());
+  void _calcLiters() {
+    if (inputControllerLiters.text == "" && inputControllerPrice.text != "" && inputControllerCost.text != "") {
+      setState(() {
+        double result = cost / price;
+        inputControllerLiters.text = result.toString();
+        liters = result;
+      });
+    } else if (inputControllerLiters.text != "" && inputControllerPrice.text == "" && inputControllerCost.text != "") {
+      setState(() {
+        double result = cost / liters;
+        inputControllerPrice.text = result.toString();
+        price = result;
+      });
+    } else if (inputControllerLiters.text != "" && inputControllerPrice.text != "" && inputControllerCost.text == "") {
+      setState(() {
+        double result = price * liters;
+        inputControllerCost.text = result.toString();
+        cost = result;
+      });
+    }
+  }
 
-    if (liters == null) return;
+  void dispose() {
+    inputControllerOdometr.dispose();
+    inputControllerPrice.dispose();
+    inputControllerCost.dispose();
+    inputControllerLiters.dispose();
 
-    ScopedModel.of<FuelingListModel>(_context).add(Fueling(liters, price, cost,
-        odometr, fullFueling, fuelingDateTime, createdDateTime));
+    super.dispose();
   }
 
   Widget build(BuildContext context) {
@@ -250,6 +290,18 @@ class FormAddState extends State<FormAdd> {
       controller: inputControllerOdometr,
       decoration: InputDecoration(labelText: 'Odometr state'),
       keyboardType: TextInputType.number,
+      validator: (value) {
+        if(value.isEmpty){
+          return 'State mustn\'t be null';
+        }
+        if(_fuelings.isNotEmpty){
+          if (int.parse(value) < _fuelings.last.odometr) {
+            return 'State is lower than before';
+          }
+        }
+
+        return null;
+      },
     );
   }
 
@@ -263,6 +315,12 @@ class FormAddState extends State<FormAdd> {
               controller: inputControllerPrice,
               decoration: InputDecoration(labelText: 'pln/l'),
               keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value == null || value == "") {
+                  _calcLiters;
+                }
+                return null;
+              },
             ),
           ),
         ),
@@ -273,6 +331,12 @@ class FormAddState extends State<FormAdd> {
               controller: inputControllerCost,
               decoration: InputDecoration(labelText: 'cost'),
               keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value == null || value == "") {
+                  _calcLiters;
+                }
+                return null;
+              },
             ),
           ),
         ),
@@ -283,6 +347,12 @@ class FormAddState extends State<FormAdd> {
               controller: inputControllerLiters,
               decoration: InputDecoration(labelText: 'liters'),
               keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value == null || value == "") {
+                  _calcLiters;
+                }
+                return null;
+              },
             ),
           ),
         )
@@ -313,8 +383,9 @@ class FormAddState extends State<FormAdd> {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             Scaffold.of(context)
-                .showSnackBar(SnackBar(content: Text('Processing Data')));
-            _addPurchase();
+                .showSnackBar(SnackBar(content: Text('Adding data...')));
+
+            _addItem();
           }
         },
         child: Text('Submit'),
