@@ -17,8 +17,8 @@ class Fueling with Deletable {
 
   bool fullFueling;
 
-  var fuelingDateTime;
-  var createdDateTime;
+  DateTime fuelingDateTime;
+  DateTime createdDateTime;
 
   Fueling.fromJson(Map<String, dynamic> json)
       : liters = json['liters'],
@@ -26,8 +26,8 @@ class Fueling with Deletable {
         price = json['price'],
         odometr = json['odometr'],
         fullFueling = json['fullFueling'],
-        fuelingDateTime = json['fuelingDateTime'],
-        createdDateTime = json['createdDateTime'];
+        fuelingDateTime = DateTime.parse(json['fuelingDateTime']),
+        createdDateTime = DateTime.parse(json['createdDateTime']);
 
   Map<String, dynamic> toJson() => isDeleted
       ? null
