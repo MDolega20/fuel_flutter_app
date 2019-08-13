@@ -21,36 +21,27 @@ class _FuelingListState extends State<FuelingList> {
 
   void _save() => _presisitor.save(_fuelings);
 
-  void _load() async  {
+  void _load() async {
     await _presisitor.load().then((data) => setState(() => _fuelings = data));
-    await _sortByDate;
+    await _sortByDate();
   }
 
   void _sortByDate(){
-    _fuelings.sort((a,b) {
-      return a.fuelingDateTime.compareTo(b.fuelingDateTime);
-    });
-  }
+    _fuelings.forEach((f) => print(f.fuelingDateTime));
 
+    _fuelings.sort((a,b) {
+      DateTime date1 = a.fuelingDateTime;
+      DateTime date2 = b.fuelingDateTime;
+      return date2.compareTo(date1);
+    });
+
+    _fuelings.forEach((f) => print(f.fuelingDateTime));
+  }
 
   void _resetList(){
     _fuelings = [];
     _save();
   }
-//  void _test() {
-//    setState(() {
-//      for (int i = 0; i < 10; i++) {
-//        _fuelings.add(new Fueling(
-//            100,
-//            500,
-//            200,
-//            3542353 + i,
-//            true,
-//            DateTime.now(),
-//            DateTime.now()));
-//      }
-//    });
-//  }
 
   void _dismissDialog(response) {
     Navigator.pop(context, response);
@@ -92,7 +83,7 @@ class _FuelingListState extends State<FuelingList> {
             FuelingListItem(
               key: ObjectKey(_fuelings[i]),
               itemData: _fuelings[i],
-              prevItemData: i != 0 ? _fuelings[i - 1] : null,
+              prevItemData: i  < _fuelings.length - 1 ? _fuelings[i + 1] : null,
               onDelete: () => _deleteItem(context, i),
             ))
         : _buildPlaceholder(context);

@@ -22,7 +22,7 @@ class FormAdd extends StatefulWidget {
 }
 
 class _FormAddState extends State<FormAdd> {
-  List<Fueling> _fuelings = [];
+  List<Fueling> _fuelings = []; //TODO NOT SORTED
   Persistor _presisitor = Persistor();
 
   final _formKey = GlobalKey<FormState>();
@@ -206,7 +206,6 @@ class _FormAddState extends State<FormAdd> {
   Widget formSectionDateTime() {
     final formatDate = DateFormat("yyyy-MM-dd");
     final formatTime = DateFormat("HH:mm");
-    final initialValue = DateTime.now();
 
     return Row(
       children: <Widget>[
@@ -288,14 +287,14 @@ class _FormAddState extends State<FormAdd> {
   Widget fromSectionOdometr() {
     return TextFormField(
       controller: inputControllerOdometr,
-      decoration: InputDecoration(labelText: 'Odometr state'),
+      decoration: InputDecoration(labelText: 'Odometr state [last: ${_fuelings.first.odometr}]'),
       keyboardType: TextInputType.number,
       validator: (value) {
         if(value.isEmpty){
           return 'State mustn\'t be null';
         }
         if(_fuelings.isNotEmpty){
-          if (int.parse(value) < _fuelings.last.odometr) {
+          if (int.parse(value) < _fuelings.first.odometr) { //TODO fix that
             return 'State is lower than before';
           }
         }

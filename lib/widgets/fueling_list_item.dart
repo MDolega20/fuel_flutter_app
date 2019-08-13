@@ -33,6 +33,7 @@ class _FuelingListItemState extends State<FuelingListItem> {
               _top(),
               if (_detailsDisplayed) _details(),
               _middle(),
+              if (_detailsDisplayed) _bottom(),
             ],
           ),
           padding: EdgeInsets.all(8.0),
@@ -43,7 +44,8 @@ class _FuelingListItemState extends State<FuelingListItem> {
   }
 
   Widget _top() {
-    var _format = new DateFormat('d MMM');
+    var _formatShort = new DateFormat('d MMM');
+    var _formatLong = new DateFormat('y-MM-dd');
     var textStyle = TextStyle(fontSize: 17);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,7 +55,9 @@ class _FuelingListItemState extends State<FuelingListItem> {
           style: textStyle,
         ),
         Text(
-          _format.format(widget.itemData.fuelingDateTime),
+          _detailsDisplayed
+              ? _formatLong.format(widget.itemData.fuelingDateTime)
+              : _formatShort.format(widget.itemData.fuelingDateTime),
           style: textStyle,
         )
       ],
@@ -92,10 +96,12 @@ class _FuelingListItemState extends State<FuelingListItem> {
   Widget _details() {
     var textStyle = TextStyle(fontSize: 15);
     double litersper100;
-    if(widget.prevItemData != null){ //TODO
-      litersper100 = (widget.itemData.odometr - widget.prevItemData.odometr) / widget.itemData.liters * 100;
+    if (widget.prevItemData != null) {
+      //TODO this is dont work because it not consider full fueling
+      litersper100 = (widget.prevItemData.odometr - widget.itemData.odometr) /
+          widget.itemData.liters *
+          100;
     }
-
 
     return Column(
       children: <Widget>[
@@ -124,12 +130,33 @@ class _FuelingListItemState extends State<FuelingListItem> {
               ),
             ),
             Text(
-              litersper100 != null ?
-              "${litersper100.toString()} l/100km" : "not enough data l/100km",
+              litersper100 != null
+                  ? "${litersper100.toString()} l/100km"
+                  : "not enough data l/100km",
               style: textStyle,
             ),
           ],
         )
+      ],
+    );
+  }
+
+  Widget _bottom() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: widget.onDelete,
+          tooltip: 'Delete',
+          iconSize: 20,
+        ),
+        IconButton(
+          icon: Icon(Icons.edit),
+          onPressed: () {},
+          tooltip: 'Edit',
+          iconSize: 20,
+        ),
       ],
     );
   }
