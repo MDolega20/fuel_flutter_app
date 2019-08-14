@@ -1,11 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+
+import 'package:flutter_app_2/model/fuel_list_model.dart';
+import 'package:flutter_app_2/persistor.dart';
 import 'package:flutter_app_2/screens/page_add_data.dart';
 import 'package:flutter_app_2/screens/page_history.dart';
 import 'package:flutter_app_2/screens/page_stats.dart';
 import 'package:flutter_app_2/screens/start.dart';
 
 class FuelApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final persistor = Persistor();
+    final model =
+        FuelingListModel(onSave: (model) => persistor.save(model.fuelings));
 
+    persistor.load().then((data) => model.import(data));
+
+    return ScopedModel<FuelingListModel>(
+      model: model,
+      child: MaterialApp(
+        home: StartPage(),
+        initialRoute: '/',
+        routes: {
+          '/start': (context) => StartPage(),
+          '/add_new': (context) => FuelAppMain(),
+        },
+      ),
+    );
+  }
+}
+
+class FuelAppMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_app_2/widgets/fueling.dart';
+import 'package:flutter_app_2/model/fueling.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Persistor {

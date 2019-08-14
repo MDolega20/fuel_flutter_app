@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_2/model/fuel_list_model.dart';
 import 'package:flutter_app_2/persistor.dart';
-import 'package:flutter_app_2/widgets/fueling.dart';
+import 'package:flutter_app_2/model/fueling.dart';
 import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -22,8 +22,7 @@ class FormAdd extends StatefulWidget {
 }
 
 class _FormAddState extends State<FormAdd> {
-  List<Fueling> _fuelings = []; //TODO NOT SORTED
-  Persistor _presisitor = Persistor();
+  BuildContext _context;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -48,15 +47,9 @@ class _FormAddState extends State<FormAdd> {
   @override
   void initState() {
     super.initState();
-    _load();
     _controllerListeners();
     _compareDateTime();
   }
-
-  void _save() => _presisitor.save(_fuelings);
-
-  void _load() =>
-      _presisitor.load().then((data) => setState(() => _fuelings = data));
 
   void _addItem() async {
     if (liters != null &&
@@ -65,16 +58,16 @@ class _FormAddState extends State<FormAdd> {
         odometr != null &&
         fuelingDateTime != null &&
         createdDateTime != null) {
+      final model = ScopedModel.of<FuelingListModel>(_context);
 
-      await setState(() {
-        _fuelings.add(Fueling(liters, price, cost, odometr, fullFueling,
-            fuelingDateTime, createdDateTime));
-      });
+      Fueling _newItem = Fueling(liters, price, cost, odometr, fullFueling,
+          fuelingDateTime, createdDateTime);
+
+      model.add(_newItem);
     } else {
       Scaffold.of(context).showSnackBar(SnackBar(content: Text('Error')));
     }
 
-    await _save();
     await Scaffold.of(context).showSnackBar(SnackBar(content: Text('Saved')));
   }
 
@@ -127,19 +120,25 @@ class _FormAddState extends State<FormAdd> {
   }
 
   void _calcLiters() {
-    if (inputControllerLiters.text == "" && inputControllerPrice.text != "" && inputControllerCost.text != "") {
+    if (inputControllerLiters.text == "" &&
+        inputControllerPrice.text != "" &&
+        inputControllerCost.text != "") {
       setState(() {
         double result = cost / price;
         inputControllerLiters.text = result.toString();
         liters = result;
       });
-    } else if (inputControllerLiters.text != "" && inputControllerPrice.text == "" && inputControllerCost.text != "") {
+    } else if (inputControllerLiters.text != "" &&
+        inputControllerPrice.text == "" &&
+        inputControllerCost.text != "") {
       setState(() {
         double result = cost / liters;
         inputControllerPrice.text = result.toString();
         price = result;
       });
-    } else if (inputControllerLiters.text != "" && inputControllerPrice.text != "" && inputControllerCost.text == "") {
+    } else if (inputControllerLiters.text != "" &&
+        inputControllerPrice.text != "" &&
+        inputControllerCost.text == "") {
       setState(() {
         double result = price * liters;
         inputControllerCost.text = result.toString();
@@ -158,29 +157,33 @@ class _FormAddState extends State<FormAdd> {
   }
 
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Form(
-            key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
-              child: Column(
-                children: <Widget>[
-                  formSectionDateTime(),
-                  SizedBox(height: 5),
-                  fromSectionOdometr(),
-                  SizedBox(height: 5),
-                  fromSectionLiters(),
-                  SizedBox(height: 5),
-                  formSectionFullFueling(),
-                  SizedBox(height: 5),
-                  fromSubmit(),
-                  SizedBox(height: 25),
-                  testing()
-                ],
-              ),
-            )),
-      ],
+    return ScopedModelDescendant<FuelingListModel>(
+      builder: (BuildContext context, child, model) {
+        return Column(
+          children: <Widget>[
+            Form(
+                key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
+                  child: Column(
+                    children: <Widget>[
+                      formSectionDateTime(),
+                      SizedBox(height: 5),
+                      fromSectionOdometr(context, model),
+                      SizedBox(height: 5),
+                      fromSectionLiters(),
+                      SizedBox(height: 5),
+                      formSectionFullFueling(),
+                      SizedBox(height: 5),
+                      fromSubmit(),
+                      SizedBox(height: 25),
+                      testing()
+                    ],
+                  ),
+                )),
+          ],
+        );
+      },
     );
   }
 
@@ -284,17 +287,19 @@ class _FormAddState extends State<FormAdd> {
     );
   }
 
-  Widget fromSectionOdometr() {
+  Widget fromSectionOdometr(BuildContext context, FuelingListModel model) {
     return TextFormField(
       controller: inputControllerOdometr,
-      decoration: InputDecoration(labelText: 'Odometr state [last: ${_fuelings.first.odometr}]'),
+      decoration: InputDecoration(
+          labelText: 'Odometr state [last: ${model.fuelings.first.odometr}]'),
       keyboardType: TextInputType.number,
       validator: (value) {
-        if(value.isEmpty){
+        if (value.isEmpty) {
           return 'State mustn\'t be null';
         }
-        if(_fuelings.isNotEmpty){
-          if (int.parse(value) < _fuelings.first.odometr) { //TODO fix that
+        if (model.fuelings.isNotEmpty) {
+          if (int.parse(value) < model.fuelings.first.odometr) {
+            //TODO fix that
             return 'State is lower than before';
           }
         }
