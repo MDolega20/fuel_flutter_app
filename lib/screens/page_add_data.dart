@@ -10,9 +10,11 @@ import 'package:scoped_model/scoped_model.dart';
 class PageAddData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(children: <Widget>[
-      FormAdd(),
-    ]);
+    ScopedModelDescendant<FuelingListModel>(
+        builder: (BuildContext context, child, model) => ListView(children: <Widget>[
+          FormAdd(),
+        ])
+    );
   }
 }
 
@@ -58,12 +60,14 @@ class _FormAddState extends State<FormAdd> {
         odometr != null &&
         fuelingDateTime != null &&
         createdDateTime != null) {
+
       final model = ScopedModel.of<FuelingListModel>(_context);
 
       Fueling _newItem = Fueling(liters, price, cost, odometr, fullFueling,
           fuelingDateTime, createdDateTime);
 
       model.add(_newItem);
+
     } else {
       Scaffold.of(context).showSnackBar(SnackBar(content: Text('Error')));
     }
@@ -156,10 +160,8 @@ class _FormAddState extends State<FormAdd> {
     super.dispose();
   }
 
-  Widget build(BuildContext context) {
-    return ScopedModelDescendant<FuelingListModel>(
-      builder: (BuildContext context, child, model) {
-        return Column(
+  Widget build(BuildContext context, FuelingListModel model) { //TODO err here
+    return Column(
           children: <Widget>[
             Form(
                 key: _formKey,
@@ -182,8 +184,6 @@ class _FormAddState extends State<FormAdd> {
                   ),
                 )),
           ],
-        );
-      },
     );
   }
 
@@ -388,7 +388,6 @@ class _FormAddState extends State<FormAdd> {
           if (_formKey.currentState.validate()) {
             Scaffold.of(context)
                 .showSnackBar(SnackBar(content: Text('Adding data...')));
-
             _addItem();
           }
         },
