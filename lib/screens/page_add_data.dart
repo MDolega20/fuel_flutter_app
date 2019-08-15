@@ -2,7 +2,6 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app_2/model/fuel_list_model.dart';
-import 'package:flutter_app_2/persistor.dart';
 import 'package:flutter_app_2/model/fueling.dart';
 import 'package:intl/intl.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -10,11 +9,9 @@ import 'package:scoped_model/scoped_model.dart';
 class PageAddData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ScopedModelDescendant<FuelingListModel>(
-        builder: (BuildContext context, child, model) => ListView(children: <Widget>[
-          FormAdd(),
-        ])
-    );
+    return ListView(children: <Widget>[
+      FormAdd(),
+    ]);
   }
 }
 
@@ -160,30 +157,41 @@ class _FormAddState extends State<FormAdd> {
     super.dispose();
   }
 
-  Widget build(BuildContext context, FuelingListModel model) { //TODO err here
+  @override
+  Widget build(BuildContext context) {
+    return ScopedModelDescendant<FuelingListModel>(
+        builder: (BuildContext context, child, model) {
+          _context = context;
+
+          return _build(context, model);
+        }
+    );
+  }
+
+  Widget _build(BuildContext context, FuelingListModel model){
     return Column(
-          children: <Widget>[
-            Form(
-                key: _formKey,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
-                  child: Column(
-                    children: <Widget>[
-                      formSectionDateTime(),
-                      SizedBox(height: 5),
-                      fromSectionOdometr(context, model),
-                      SizedBox(height: 5),
-                      fromSectionLiters(),
-                      SizedBox(height: 5),
-                      formSectionFullFueling(),
-                      SizedBox(height: 5),
-                      fromSubmit(),
-                      SizedBox(height: 25),
-                      testing()
-                    ],
-                  ),
-                )),
-          ],
+      children: <Widget>[
+        Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
+              child: Column(
+                children: <Widget>[
+                  formSectionDateTime(),
+                  SizedBox(height: 5),
+                  fromSectionOdometr(context, model),
+                  SizedBox(height: 5),
+                  fromSectionLiters(),
+                  SizedBox(height: 5),
+                  formSectionFullFueling(),
+                  SizedBox(height: 5),
+                  fromSubmit(),
+                  SizedBox(height: 25),
+                  testing()
+                ],
+              ),
+            )),
+      ],
     );
   }
 

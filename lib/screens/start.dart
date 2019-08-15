@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_2/app.dart';
-//import 'package:flutter_app_2/screens/page_add_data.dart';
-
-// TODo CHECK THIS https://flutter.dev/docs/catalog/samples/basic-app-bar
 
 class StartPage extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -10,12 +7,16 @@ class StartPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Fuel app"),
       ),
-      body: StartPageBody(),
+      body: StartPageBody("To jest wiadomość z propsa"), //TODO test przekazywania propsów
     );
   }
 }
 
 class StartPageBody extends StatelessWidget {
+
+  StartPageBody({this.messege});
+  final String messege;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -27,6 +28,7 @@ class StartPageBody extends StatelessWidget {
           style: TextStyle(fontSize: 50.0),
           textAlign: TextAlign.center,
         ),
+        Text(messege),
         Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: FlatButton(
