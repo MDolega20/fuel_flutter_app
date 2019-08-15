@@ -7,15 +7,16 @@ class StartPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Fuel app"),
       ),
-      body: StartPageBody("To jest wiadomość z propsa"), //TODO test przekazywania propsów
+      body: StartPageBody(messege: "To jest wiadomość z propsa"),
     );
   }
 }
 
 class StartPageBody extends StatelessWidget {
 
-  StartPageBody({this.messege});
   final String messege;
+
+  StartPageBody({this.messege});
 
   @override
   Widget build(BuildContext context) {
