@@ -57,14 +57,12 @@ class _FormAddState extends State<FormAdd> {
         odometr != null &&
         fuelingDateTime != null &&
         createdDateTime != null) {
-
       final model = ScopedModel.of<FuelingListModel>(_context);
 
       Fueling _newItem = Fueling(liters, price, cost, odometr, fullFueling,
           fuelingDateTime, createdDateTime);
 
       model.add(_newItem);
-
     } else {
       Scaffold.of(context).showSnackBar(SnackBar(content: Text('Error')));
     }
@@ -90,6 +88,7 @@ class _FormAddState extends State<FormAdd> {
           price = double.parse(inputControllerPrice.text);
         });
       }
+      _calcLiters();
     });
     inputControllerCost.addListener(() {
       if (inputControllerCost.text != null &&
@@ -99,6 +98,7 @@ class _FormAddState extends State<FormAdd> {
           cost = double.parse(inputControllerCost.text);
         });
       }
+      _calcLiters();
     });
     inputControllerLiters.addListener(() {
       if (inputControllerLiters.text != null &&
@@ -108,6 +108,7 @@ class _FormAddState extends State<FormAdd> {
           liters = double.parse(inputControllerLiters.text);
         });
       }
+      _calcLiters();
     });
   }
 
@@ -121,31 +122,61 @@ class _FormAddState extends State<FormAdd> {
   }
 
   void _calcLiters() {
-    if (inputControllerLiters.text == "" &&
-        inputControllerPrice.text != "" &&
-        inputControllerCost.text != "") {
+    double _round(number){
+      return double.parse((number).toStringAsFixed(2));
+    }
+    void _setLiters() {
       setState(() {
-        double result = cost / price;
+        double result = _round(cost / price);
         inputControllerLiters.text = result.toString();
         liters = result;
       });
-    } else if (inputControllerLiters.text != "" &&
-        inputControllerPrice.text == "" &&
-        inputControllerCost.text != "") {
+    }
+
+    ;
+    void _setPrice() {
       setState(() {
-        double result = cost / liters;
+        double result = _round(cost / liters);
         inputControllerPrice.text = result.toString();
         price = result;
       });
-    } else if (inputControllerLiters.text != "" &&
-        inputControllerPrice.text != "" &&
-        inputControllerCost.text == "") {
+    }
+
+    void _setCost() {
       setState(() {
-        double result = price * liters;
+        double result = _round(price * liters);
         inputControllerCost.text = result.toString();
         cost = result;
       });
     }
+
+
+    if (liters == null && price == null && cost == null) {
+      return null;
+    } else if (double.tryParse(inputControllerLiters.text) != null &&
+        double.tryParse(inputControllerPrice.text) != null &&
+        double.tryParse(inputControllerCost.text) == null) {
+      return null;
+    } else if (inputControllerLiters.text == "" &&
+        price != null &&
+        cost != null) {
+      _setLiters();
+    } else if (liters != null &&
+        inputControllerPrice.text == "" &&
+        cost != null) {
+      _setPrice();
+    } else if (liters != null &&
+        price != null &&
+        inputControllerCost.text == "") {
+      _setCost();
+    }
+//    else if (liters != cost / price) {
+//      _setLiters();
+//    } else if (price != cost / liters) {
+//      _setPrice();
+//    } else if (cost != price * liters) {
+//      _setCost();
+//    }
   }
 
   void dispose() {
@@ -161,14 +192,13 @@ class _FormAddState extends State<FormAdd> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<FuelingListModel>(
         builder: (BuildContext context, child, model) {
-          _context = context;
+      _context = context;
 
-          return _build(context, model);
-        }
-    );
+      return _build(context, model);
+    });
   }
 
-  Widget _build(BuildContext context, FuelingListModel model){
+  Widget _build(BuildContext context, FuelingListModel model) {
     return Column(
       children: <Widget>[
         Form(
@@ -327,12 +357,6 @@ class _FormAddState extends State<FormAdd> {
               controller: inputControllerPrice,
               decoration: InputDecoration(labelText: 'pln/l'),
               keyboardType: TextInputType.number,
-              validator: (value) {
-                if (value == null || value == "") {
-                  _calcLiters();
-                }
-                return null;
-              },
             ),
           ),
         ),
@@ -343,12 +367,6 @@ class _FormAddState extends State<FormAdd> {
               controller: inputControllerCost,
               decoration: InputDecoration(labelText: 'cost'),
               keyboardType: TextInputType.number,
-              validator: (value) {
-                if (value == null || value == "") {
-                  _calcLiters();
-                }
-                return null;
-              },
             ),
           ),
         ),
@@ -359,12 +377,6 @@ class _FormAddState extends State<FormAdd> {
               controller: inputControllerLiters,
               decoration: InputDecoration(labelText: 'liters'),
               keyboardType: TextInputType.number,
-              validator: (value) {
-                if (value == null || value == "") {
-                  _calcLiters();
-                }
-                return null;
-              },
             ),
           ),
         )
