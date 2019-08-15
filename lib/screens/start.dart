@@ -7,16 +7,12 @@ class StartPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Fuel app"),
       ),
-      body: StartPageBody(messege: "To jest wiadomość z propsa"),
+      body: StartPageBody(),
     );
   }
 }
 
 class StartPageBody extends StatelessWidget {
-
-  final String messege;
-
-  StartPageBody({this.messege});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +25,6 @@ class StartPageBody extends StatelessWidget {
           style: TextStyle(fontSize: 50.0),
           textAlign: TextAlign.center,
         ),
-        Text(messege),
         Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: FlatButton(

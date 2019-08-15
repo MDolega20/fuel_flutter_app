@@ -329,7 +329,7 @@ class _FormAddState extends State<FormAdd> {
               keyboardType: TextInputType.number,
               validator: (value) {
                 if (value == null || value == "") {
-                  _calcLiters;
+                  _calcLiters();
                 }
                 return null;
               },
@@ -345,7 +345,7 @@ class _FormAddState extends State<FormAdd> {
               keyboardType: TextInputType.number,
               validator: (value) {
                 if (value == null || value == "") {
-                  _calcLiters;
+                  _calcLiters();
                 }
                 return null;
               },
@@ -361,7 +361,7 @@ class _FormAddState extends State<FormAdd> {
               keyboardType: TextInputType.number,
               validator: (value) {
                 if (value == null || value == "") {
-                  _calcLiters;
+                  _calcLiters();
                 }
                 return null;
               },
