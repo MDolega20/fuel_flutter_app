@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_2/app.dart';
+import 'package:flutter_app_2/screens/page_edit_fueling.dart';
 
 class StartPage extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -13,7 +14,6 @@ class StartPage extends StatelessWidget {
 }
 
 class StartPageBody extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -26,21 +26,44 @@ class StartPageBody extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: FlatButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => FuelAppMain()),
-              );
-            },
-            color: Colors.red,
-            child: Text(
-              "Check this!",
-              style: TextStyle(fontSize: 20.0, color: Colors.white),
-            ),
-          ),
-        )
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FlatButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FuelAppMain()),
+                      );
+                    },
+                    color: Colors.red,
+                    child: Text(
+                      "Check this!",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FlatButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PageEditFueling()),
+                      );
+                    },
+                    color: Colors.green,
+                    child: Text(
+                      "Test",
+                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            ))
       ],
     );
   }

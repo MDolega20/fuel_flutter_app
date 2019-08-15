@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_2/screens/page_edit_fueling.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'package:flutter_app_2/model/fuel_list_model.dart';
@@ -24,7 +25,8 @@ class FuelApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/start': (context) => StartPage(),
-          '/add_new': (context) => FuelAppMain(),
+          '/main': (context) => FuelAppMain(),
+          '/edit_fueling': (context) => PageEditFueling(),
         },
       ),
     );
