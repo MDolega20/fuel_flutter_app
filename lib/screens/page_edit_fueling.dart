@@ -15,8 +15,17 @@ class PageEditFueling extends StatelessWidget {
 
   void _updateItem() async {
     final model = ScopedModel.of<FuelingListModel>(_context);
-    model.update(itemIndex, fueling); //TODO sending a edited object from EditFuelingBody
-    Scaffold.of(_context).showSnackBar(SnackBar(content: Text('Saved')));
+    //TODO sending a edited object from EditFuelingBody
+    model.update(itemIndex, fueling);
+    //TODO figure out why this is not working and give mi error
+    //ERROR HERE
+    //    E/flutter ( 4594): [ERROR:flutter/lib/ui/ui_dart_state.cc(148)] Unhandled Exception: Scaffold.of() called with a context that does not contain a Scaffold.
+    //    E/flutter ( 4594): No Scaffold ancestor could be found starting from the context that was passed to Scaffold.of(). This usually happens when the context provided is from the same StatefulWidget as that whose build function actually creates the Scaffold widget being sought.
+    //    E/flutter ( 4594): There are several ways to avoid this problem. The simplest is to use a Builder to get a context that is "under" the Scaffold. For an example of this, please see the documentation for Scaffold.of():
+    //    E/flutter ( 4594):   https://api.flutter.dev/flutter/material/Scaffold/of.html
+    //    E/flutter ( 4594): A more efficient solution is to split your build function into several widgets. This introduces a new context from which you can obtain the Scaffold. In this solution, you would have an outer widget that creates the Scaffold populated by instances of your new inner widgets, and then in these inner widgets you would use Scaffold.of().
+    //    E/flutter ( 4594): A less elegant but more expedient solution is assign a GlobalKey to the Scaffold, then use the key.currentState property to obtain the ScaffoldState rather than using the Scaffold.of() function.
+    //    Scaffold.of(_context).showSnackBar(SnackBar(content: Text('Saved')));
     Navigator.pop(_context);
   }
 
@@ -29,7 +38,7 @@ class PageEditFueling extends StatelessWidget {
   Widget _build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit item"),
+        title: Text("Edit item 1"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.save),
@@ -67,6 +76,8 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
   double _price;
   double _cost;
   double _liters;
+
+  bool _fullFueling;
 
   TextEditingController inputControllerOdometr = new TextEditingController();
   TextEditingController inputControllerPrice = new TextEditingController();
@@ -163,6 +174,8 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
       inputControllerCost.text = _fueling.cost.toString();
       inputControllerPrice.text = _fueling.price.toString();
       inputControllerLiters.text = _fueling.liters.toString();
+
+      _fullFueling = _fueling.fullFueling;
     });
   }
 
@@ -180,7 +193,7 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
       child: Column(
-        children: <Widget>[_date(), _odometr(), _costs(), _testing()],
+        children: <Widget>[_date(), _odometr(), _costs(), _fullFuelingCheckbox(), _testing()],
       ),
     );
   }
@@ -303,6 +316,24 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
         ],
       )
     ]);
+  }
+
+  Widget _fullFuelingCheckbox(){
+    return _sectionBody(<Widget>[
+        _sectionTitle("Full fueling"),
+    Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+        Text("Full fueling", style: TextStyle(fontSize: 18)),
+    Checkbox(
+    value: _fullFueling,
+    onChanged: (bool value) {
+    setState(() {
+    _fullFueling = value;
+    });
+    })
+    ],
+    )]);
   }
 
   Widget _testing() {

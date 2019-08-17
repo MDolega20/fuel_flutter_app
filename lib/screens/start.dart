@@ -51,6 +51,7 @@ class StartPageBody extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: FlatButton(
                     onPressed: () {
+                      //TODO temporary, delete this
                       Navigator.push(
                         context,
                         MaterialPageRoute(
