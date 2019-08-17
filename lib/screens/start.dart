@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_2/app.dart';
+import 'package:flutter_app_2/model/fueling.dart';
 import 'package:flutter_app_2/screens/page_edit_fueling.dart';
 
 class StartPage extends StatelessWidget {
@@ -52,7 +53,11 @@ class StartPageBody extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => PageEditFueling(itemIndex: 1)),
+                        MaterialPageRoute(
+                            builder: (context) => PageEditFueling(
+                                itemIndex: 1,
+                                fueling: Fueling(100, 4.11, 411, 901231, false,
+                                    DateTime.now(), DateTime.now()))),
                       );
                     },
                     color: Colors.green,

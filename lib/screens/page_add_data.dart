@@ -207,17 +207,17 @@ class _FormAddState extends State<FormAdd> {
               padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
               child: Column(
                 children: <Widget>[
-                  formSectionDateTime(),
+                  _formSectionDateTime(),
                   SizedBox(height: 5),
-                  fromSectionOdometr(context, model),
+                  _fromSectionOdometr(context, model),
                   SizedBox(height: 5),
-                  fromSectionLiters(),
+                  _fromSectionLiters(),
                   SizedBox(height: 5),
-                  formSectionFullFueling(),
+                  _formSectionFullFueling(),
                   SizedBox(height: 5),
-                  fromSubmit(),
+                  _fromSubmit(),
                   SizedBox(height: 25),
-                  testing()
+                  _testing()
                 ],
               ),
             )),
@@ -226,7 +226,7 @@ class _FormAddState extends State<FormAdd> {
   }
 
   // Testing summary
-  Widget testing() {
+  Widget _testing() {
     return Column(
       children: <Widget>[
         Text(liters == null ? "liters" : "liters: $liters"),
@@ -244,7 +244,7 @@ class _FormAddState extends State<FormAdd> {
     );
   }
 
-  Widget formSectionDateTime() {
+  Widget _formSectionDateTime() {
     final formatDate = DateFormat("yyyy-MM-dd");
     final formatTime = DateFormat("HH:mm");
 
@@ -325,7 +325,7 @@ class _FormAddState extends State<FormAdd> {
     );
   }
 
-  Widget fromSectionOdometr(BuildContext context, FuelingListModel model) {
+  Widget _fromSectionOdometr(BuildContext context, FuelingListModel model) {
     return TextFormField(
       controller: inputControllerOdometr,
       decoration: InputDecoration(
@@ -347,7 +347,7 @@ class _FormAddState extends State<FormAdd> {
     );
   }
 
-  Widget fromSectionLiters() {
+  Widget _fromSectionLiters() {
     return Row(
       children: <Widget>[
         Flexible(
@@ -384,7 +384,7 @@ class _FormAddState extends State<FormAdd> {
     );
   }
 
-  Widget formSectionFullFueling() {
+  Widget _formSectionFullFueling() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -400,7 +400,7 @@ class _FormAddState extends State<FormAdd> {
     );
   }
 
-  Widget fromSubmit() {
+  Widget _fromSubmit() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: RaisedButton(
