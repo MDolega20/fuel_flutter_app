@@ -16,8 +16,8 @@ class PageEditFueling extends StatelessWidget {
   void _updateItem() async {
     final model = ScopedModel.of<FuelingListModel>(_context);
     model.update(itemIndex, fueling);
-    await Scaffold.of(_context).showSnackBar(SnackBar(content: Text('Saved')));
-    await Navigator.pop(_context);
+    Scaffold.of(_context).showSnackBar(SnackBar(content: Text('Saved')));
+    Navigator.pop(_context);
   }
 
   @override
