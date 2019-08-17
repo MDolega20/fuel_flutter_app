@@ -76,3 +76,4 @@ build/
 **/.idea/*
 **/android/*
 **/build/*
+**/build
