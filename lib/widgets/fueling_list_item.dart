@@ -83,13 +83,13 @@ class _FuelingListItemState extends State<FuelingListItem> {
                 ),
               ),
               Text(
-                "${widget.itemData.odometr.toString()} km",
+                "${widget.itemData.odometr.toStringAsFixed(2)} km",
                 style: textStyle,
               ),
             ],
           ),
           Text(
-            "${widget.itemData.cost.toString()} pln",
+            "${widget.itemData.cost.toStringAsFixed(2)} pln",
             style: textStyle,
           ),
         ]);

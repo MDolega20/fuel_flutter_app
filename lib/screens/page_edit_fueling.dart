@@ -13,7 +13,7 @@ class PageEditFueling extends StatelessWidget {
   final int itemIndex;
   final Fueling fueling;
 
-  void _updateItem<Future>() async {
+  void _updateItem() async {
     final model = ScopedModel.of<FuelingListModel>(_context);
     model.update(itemIndex, fueling);
     await Scaffold.of(_context).showSnackBar(SnackBar(content: Text('Saved')));
@@ -22,6 +22,7 @@ class PageEditFueling extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _context = context;
     return _build(context);
   }
 
@@ -66,14 +67,14 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
   TextEditingController inputControllerCost = new TextEditingController();
   TextEditingController inputControllerLiters = new TextEditingController();
 
-  Text _sectionTitle(text) {
+  Widget _sectionTitle(text) {
     return Text(
       text.toUpperCase(),
       style: TextStyle(fontSize: 15),
     );
   }
 
-  Padding _sectionBody(children) {
+  Widget _sectionBody(children) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Column(
