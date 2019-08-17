@@ -65,6 +65,7 @@ class FuelingList extends StatelessWidget {
             itemData: _fuelingItem,
             prevItemData: i < model.fuelings.length - 1 ? model.fuelings[i + 1] : null,
             onDelete: () => _deleteItem(_fuelingItem),
+            index: i,
           );
         }
     );

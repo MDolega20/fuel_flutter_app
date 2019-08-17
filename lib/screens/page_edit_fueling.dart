@@ -6,10 +6,19 @@ import 'package:flutter_app_2/model/fuel_list_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class PageEditFueling extends StatelessWidget {
+  BuildContext _context;
+
   PageEditFueling({@required this.itemIndex, this.fueling});
 
   final int itemIndex;
   final Fueling fueling;
+
+  void _updateItem<Future>() async {
+    final model = ScopedModel.of<FuelingListModel>(_context);
+    model.update(itemIndex, fueling);
+    await Scaffold.of(_context).showSnackBar(SnackBar(content: Text('Saved')));
+    await Navigator.pop(_context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +30,12 @@ class PageEditFueling extends StatelessWidget {
       appBar: AppBar(
         title: Text("Edit item index $itemIndex"),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.save), onPressed: (){
-            //TODO save here...
-          },)
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () {
+              _updateItem();
+            },
+          )
         ],
       ),
       body: EditFuelingBody(itemIndex: itemIndex, fueling: fueling),
@@ -130,7 +142,7 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
     }
   }
 
-  void _calcFuelingCost(){
+  void _calcFuelingCost() {
     setState(() {
       double cost = _fueling.liters * _fueling.price;
       _fueling.cost = cost;

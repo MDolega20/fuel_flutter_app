@@ -17,16 +17,22 @@ class FuelingListModel extends Model {
     notifyListeners();
   }
 
-  void add(Fueling fuelings) {
-    _fuelings.add(fuelings);
+  void add(Fueling fueling) {
+    _fuelings.add(fueling);
+
+    _save();
+  }
+
+  void update(int itemIndex, Fueling fueling) {
+    _fuelings[itemIndex] = fueling;
 
     _save();
   }
 
 
-  void delete(Fueling fuelings) {
+  void delete(Fueling fueling) {
     _clearHistory();
-    fuelings.delete();
+    fueling.delete();
 
     _save();
   }

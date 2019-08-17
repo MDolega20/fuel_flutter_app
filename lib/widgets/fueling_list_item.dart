@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_2/screens/page_edit_fueling.dart';
 import 'package:intl/intl.dart';
 
 class FuelingListItem extends StatefulWidget {
@@ -8,9 +9,10 @@ class FuelingListItem extends StatefulWidget {
   final itemData;
   final prevItemData;
   final onDelete;
+  final int index;
 
   const FuelingListItem(
-      {Key key, @required this.itemData, this.prevItemData, this.onDelete})
+      {Key key, @required this.itemData, this.prevItemData, this.onDelete, this.index})
       : super(key: key);
 }
 
@@ -115,7 +117,7 @@ class _FuelingListItemState extends State<FuelingListItem> {
               ),
             ),
             Text(
-              "${widget.itemData.liters.toString()} liters",
+              "${widget.itemData.liters.toStringAsFixed(2)} liters",
               style: textStyle,
             ),
           ],
@@ -131,7 +133,7 @@ class _FuelingListItemState extends State<FuelingListItem> {
             ),
             Text(
               litersper100 != null
-                  ? "${litersper100.toString()} l/100km"
+                  ? "${litersper100.toStringAsFixed(2)} l/100km"
                   : "not enough data l/100km",
               style: textStyle,
             ),
@@ -153,7 +155,15 @@ class _FuelingListItemState extends State<FuelingListItem> {
         ),
         IconButton(
           icon: Icon(Icons.edit),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => PageEditFueling(
+                      itemIndex: widget.index,
+                      fueling: widget.itemData,
+            )));
+          },
           tooltip: 'Edit',
           iconSize: 20,
         ),
