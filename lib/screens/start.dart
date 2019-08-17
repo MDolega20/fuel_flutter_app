@@ -52,7 +52,7 @@ class StartPageBody extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => PageEditFueling()),
+                        MaterialPageRoute(builder: (context) => PageEditFueling(itemIndex: 1)),
                       );
                     },
                     color: Colors.green,
