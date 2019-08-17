@@ -15,7 +15,7 @@ class PageEditFueling extends StatelessWidget {
 
   void _updateItem() async {
     final model = ScopedModel.of<FuelingListModel>(_context);
-    model.update(itemIndex, fueling);
+    model.update(itemIndex, fueling); //TODO sending a edited object from EditFuelingBody
     Scaffold.of(_context).showSnackBar(SnackBar(content: Text('Saved')));
     Navigator.pop(_context);
   }
@@ -29,7 +29,7 @@ class PageEditFueling extends StatelessWidget {
   Widget _build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit item index $itemIndex"),
+        title: Text("Edit item"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.save),
@@ -61,6 +61,12 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
 
   DateTime _dateStart;
   DateTime _timeStart;
+  DateTime _fuelingDateTime;
+
+  int _odometrState;
+  double _price;
+  double _cost;
+  double _liters;
 
   TextEditingController inputControllerOdometr = new TextEditingController();
   TextEditingController inputControllerPrice = new TextEditingController();
@@ -97,18 +103,18 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
     inputControllerOdometr.addListener(() {
       if (inputControllerOdometr.text != null &&
           inputControllerOdometr.text != "" &&
-          _fueling.odometr != int.parse(inputControllerOdometr.text)) {
+          _odometrState != int.parse(inputControllerOdometr.text)) {
         setState(() {
-          _fueling.odometr = int.parse(inputControllerOdometr.text);
+          _odometrState = int.parse(inputControllerOdometr.text);
         });
       }
     });
     inputControllerPrice.addListener(() {
       if (inputControllerPrice.text != null &&
           inputControllerPrice.text != "" &&
-          _fueling.price != double.parse(inputControllerPrice.text)) {
+          _price != double.parse(inputControllerPrice.text)) {
         setState(() {
-          _fueling.price = double.parse(inputControllerPrice.text);
+          _price = double.parse(inputControllerPrice.text);
         });
       }
       _calcFuelingCost();
@@ -116,18 +122,18 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
     inputControllerCost.addListener(() {
       if (inputControllerCost.text != null &&
           inputControllerCost.text != "" &&
-          _fueling.cost != double.parse(inputControllerCost.text)) {
+          _cost != double.parse(inputControllerCost.text)) {
         setState(() {
-          _fueling.cost = double.parse(inputControllerCost.text);
+          _cost = double.parse(inputControllerCost.text);
         });
       }
     });
     inputControllerLiters.addListener(() {
       if (inputControllerLiters.text != null &&
           inputControllerLiters.text != "" &&
-          _fueling.liters != double.parse(inputControllerLiters.text)) {
+          _liters != double.parse(inputControllerLiters.text)) {
         setState(() {
-          _fueling.liters = double.parse(inputControllerLiters.text);
+          _liters = double.parse(inputControllerLiters.text);
         });
       }
       _calcFuelingCost();
@@ -137,7 +143,7 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
   void _compareDateTime() {
     if (_dateStart != null && _timeStart != null) {
       setState(() {
-        _fueling.fuelingDateTime = _dateStart.add(
+        _fuelingDateTime = _dateStart.add(
             new Duration(hours: _timeStart.hour, minutes: _timeStart.minute));
       });
     }
@@ -145,8 +151,8 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
 
   void _calcFuelingCost() {
     setState(() {
-      double cost = _fueling.liters * _fueling.price;
-      _fueling.cost = cost;
+      double cost = _liters * _price;
+      _cost = cost;
       inputControllerCost.text = cost.toStringAsFixed(2);
     });
   }

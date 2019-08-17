@@ -55,7 +55,7 @@ class StartPageBody extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => PageEditFueling(
-                                itemIndex: 1,
+                                itemIndex: 100,
                                 fueling: Fueling(100, 4.11, 411, 901231, false,
                                     DateTime.now(), DateTime.now()))),
                       );
