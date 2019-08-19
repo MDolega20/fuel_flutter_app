@@ -23,6 +23,8 @@ class FuelApp extends StatelessWidget {
       child: MaterialApp(
         home: StartPage(),
         initialRoute: '/',
+        theme: ThemeData(
+            primarySwatch: Colors.green, backgroundColor: Colors.white),
         routes: {
           '/start': (context) => StartPage(),
           '/main': (context) => FuelAppMain(),
@@ -40,6 +42,7 @@ class FuelAppMain extends StatelessWidget {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           bottom: TabBar(
             tabs: [
               Tab(icon: Icon(Icons.add)),
