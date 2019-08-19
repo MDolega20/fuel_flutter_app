@@ -21,7 +21,7 @@ class FuelApp extends StatelessWidget {
     return ScopedModel<FuelingListModel>(
       model: model,
       child: MaterialApp(
-        home: StartPage(),
+        home: FuelAppMain(),
         initialRoute: '/',
         theme: ThemeData(
             primarySwatch: Colors.green, backgroundColor: Colors.white),

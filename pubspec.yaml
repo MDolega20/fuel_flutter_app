@@ -11,14 +11,17 @@ dependencies:
     sdk: flutter
   datetime_picker_formfield: ^0.4.1
   cupertino_icons: ^0.1.2
-
   shared_preferences: ^0.4.3
   scoped_model: ^1.0.1
+
+  flutter_localizations:
+    sdk: flutter
 
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  intl_translation: ^0.17.1
 
 flutter:
   uses-material-design: true
