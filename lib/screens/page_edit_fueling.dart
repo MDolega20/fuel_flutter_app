@@ -5,27 +5,29 @@ import 'package:intl/intl.dart';
 import 'package:flutter_app_2/model/fuel_list_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class PageEditFueling extends StatelessWidget {
-  BuildContext _context;
-
+class PageEditFueling extends StatefulWidget {
   PageEditFueling({@required this.itemIndex, this.fueling});
 
   final int itemIndex;
   final Fueling fueling;
 
+  @override
+  _PageEditFueling createState() => _PageEditFueling();
+}
+
+class _PageEditFueling extends State<PageEditFueling> {
+  BuildContext _context;
+  Fueling _fuelingChanged;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   void _updateItem() async {
-    final model = ScopedModel.of<FuelingListModel>(_context);
     //TODO sending a edited object from EditFuelingBody
-    model.update(itemIndex, fueling);
-    //TODO figure out why this is not working and give mi error
-    //ERROR HERE
-    //    E/flutter ( 4594): [ERROR:flutter/lib/ui/ui_dart_state.cc(148)] Unhandled Exception: Scaffold.of() called with a context that does not contain a Scaffold.
-    //    E/flutter ( 4594): No Scaffold ancestor could be found starting from the context that was passed to Scaffold.of(). This usually happens when the context provided is from the same StatefulWidget as that whose build function actually creates the Scaffold widget being sought.
-    //    E/flutter ( 4594): There are several ways to avoid this problem. The simplest is to use a Builder to get a context that is "under" the Scaffold. For an example of this, please see the documentation for Scaffold.of():
-    //    E/flutter ( 4594):   https://api.flutter.dev/flutter/material/Scaffold/of.html
-    //    E/flutter ( 4594): A more efficient solution is to split your build function into several widgets. This introduces a new context from which you can obtain the Scaffold. In this solution, you would have an outer widget that creates the Scaffold populated by instances of your new inner widgets, and then in these inner widgets you would use Scaffold.of().
-    //    E/flutter ( 4594): A less elegant but more expedient solution is assign a GlobalKey to the Scaffold, then use the key.currentState property to obtain the ScaffoldState rather than using the Scaffold.of() function.
-    //    Scaffold.of(_context).showSnackBar(SnackBar(content: Text('Saved')));
+//    final model = ScopedModel.of<FuelingListModel>(_context);
+//    model.update(widget.itemIndex, widget.fueling);
     Navigator.pop(_context);
   }
 
@@ -38,17 +40,18 @@ class PageEditFueling extends StatelessWidget {
   Widget _build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit item 1"),
+        title: Text("Edit item"),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.save),
             onPressed: () {
               _updateItem();
             },
-          )
+          ),
         ],
       ),
-      body: EditFuelingBody(itemIndex: itemIndex, fueling: fueling),
+      body:
+          EditFuelingBody(itemIndex: widget.itemIndex, fueling: widget.fueling),
     );
   }
 }
@@ -179,21 +182,29 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
     });
   }
 
+  void _update() {}
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<FuelingListModel>(
         builder: (BuildContext context, child, model) {
       _context = context;
 
-      return _build(context, model);
+      return _build(context);
     });
   }
 
-  Widget _build(BuildContext context, FuelingListModel model) {
+  Widget _build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
       child: Column(
-        children: <Widget>[_date(), _odometr(), _costs(), _fullFuelingCheckbox(), _testing()],
+        children: <Widget>[
+          _date(),
+          _odometr(),
+          _costs(),
+          _fullFuelingCheckbox(),
+          _testing()
+        ],
       ),
     );
   }
@@ -228,10 +239,11 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
                 format: formatDate,
                 onShowPicker: (context, currentValue) {
                   return showDatePicker(
-                      context: context,
-                      firstDate: DateTime(1900),
-                      initialDate: _currentValue ?? DateTime.now(),
-                      lastDate: DateTime(2100));
+                    context: context,
+                    firstDate: DateTime(1900),
+                    initialDate: _currentValue ?? DateTime.now(),
+                    lastDate: DateTime(2100),
+                  );
                 },
                 validator: (date) => date == null ? 'Invalid date' : null,
                 initialValue: _currentValue,
@@ -239,23 +251,24 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
           ),
         ),
         Flexible(
-            child: Padding(
-          padding: const EdgeInsets.only(left: 5),
-          child: DateTimeField(
-            format: formatTime,
-            onShowPicker: (context, currentValue) async {
-              final time = await showTimePicker(
-                context: context,
-                initialTime:
-                    TimeOfDay.fromDateTime(_currentValue ?? DateTime.now()),
-              );
-              return DateTimeField.convert(time);
-            },
-            validator: (date) => date == null ? 'Invalid date' : null,
-            initialValue: _currentValue,
-            onChanged: (date) => _setTime(date),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 5),
+            child: DateTimeField(
+              format: formatTime,
+              onShowPicker: (context, currentValue) async {
+                final time = await showTimePicker(
+                  context: context,
+                  initialTime:
+                      TimeOfDay.fromDateTime(_currentValue ?? DateTime.now()),
+                );
+                return DateTimeField.convert(time);
+              },
+              validator: (date) => date == null ? 'Invalid date' : null,
+              initialValue: _currentValue,
+              onChanged: (date) => _setTime(date),
+            ),
           ),
-        ))
+        ),
       ]),
     ]);
   }
@@ -318,22 +331,23 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
     ]);
   }
 
-  Widget _fullFuelingCheckbox(){
+  Widget _fullFuelingCheckbox() {
     return _sectionBody(<Widget>[
-        _sectionTitle("Full fueling"),
-    Row(
+      _sectionTitle("Full fueling"),
+      Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-        Text("Full fueling", style: TextStyle(fontSize: 18)),
-    Checkbox(
-    value: _fullFueling,
-    onChanged: (bool value) {
-    setState(() {
-    _fullFueling = value;
-    });
-    })
-    ],
-    )]);
+          Text("Full fueling", style: TextStyle(fontSize: 18)),
+          Checkbox(
+              value: _fullFueling,
+              onChanged: (bool value) {
+                setState(() {
+                  _fullFueling = value;
+                });
+              })
+        ],
+      )
+    ]);
   }
 
   Widget _testing() {
