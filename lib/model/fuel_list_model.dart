@@ -37,6 +37,12 @@ class FuelingListModel extends Model {
     _save();
   }
 
+  void _reset(Fueling fueling) {
+   _fuelings.removeWhere((el){true;});
+
+    _save();
+  }
+
 
   void _clearHistory() {
     _fuelings.removeWhere((fueling) => fueling.isDeleted);

@@ -26,6 +26,13 @@ class _FuelingListItemState extends State<FuelingListItem> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    print(widget.itemData);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return InkWell(
       child: Container(

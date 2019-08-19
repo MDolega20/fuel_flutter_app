@@ -17,57 +17,6 @@ class PageEditFueling extends StatefulWidget {
 
 class _PageEditFueling extends State<PageEditFueling> {
   BuildContext _context;
-  Fueling _fuelingChanged;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void _updateItem() async {
-    //TODO sending a edited object from EditFuelingBody
-//    final model = ScopedModel.of<FuelingListModel>(_context);
-//    model.update(widget.itemIndex, widget.fueling);
-    Navigator.pop(_context);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _context = context;
-    return _build(context);
-  }
-
-  Widget _build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Edit item"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.save),
-            onPressed: () {
-              _updateItem();
-            },
-          ),
-        ],
-      ),
-      body:
-          EditFuelingBody(itemIndex: widget.itemIndex, fueling: widget.fueling),
-    );
-  }
-}
-
-class EditFuelingBody extends StatefulWidget {
-  EditFuelingBody({@required this.itemIndex, this.fueling});
-
-  final int itemIndex;
-  final Fueling fueling;
-
-  @override
-  _EditFuelingBodyState createState() => _EditFuelingBodyState();
-}
-
-class _EditFuelingBodyState extends State<EditFuelingBody> {
-  BuildContext _context;
 
   Fueling _fueling;
 
@@ -110,6 +59,7 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
     });
     _controllerListeners();
     _getInitialData();
+    _compareDateTime();
     super.initState();
   }
 
@@ -164,11 +114,13 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
   }
 
   void _calcFuelingCost() {
-    setState(() {
-      double cost = _liters * _price;
-      _cost = cost;
-      inputControllerCost.text = cost.toStringAsFixed(2);
-    });
+    if (_liters != null && _price != null) {
+      setState(() {
+        double cost = _liters * _price;
+        _cost = cost;
+        inputControllerCost.text = cost.toStringAsFixed(2);
+      });
+    }
   }
 
   void _getInitialData() {
@@ -182,29 +134,53 @@ class _EditFuelingBodyState extends State<EditFuelingBody> {
     });
   }
 
-  void _update() {}
+  void _updateItem() async {
+    final model = ScopedModel.of<FuelingListModel>(_context);
+
+    Fueling _fuelingChanged = Fueling(
+        _liters != null ? _liters : widget.fueling.liters,
+        _price != null ? _price : widget.fueling.price,
+        _cost != null ? _cost : widget.fueling.cost,
+        _odometrState != null ? _odometrState : widget.fueling.odometr,
+        _fullFueling != null ? _fullFueling : widget.fueling.fullFueling,
+        _fuelingDateTime != null ? _fuelingDateTime : widget.fueling.fuelingDateTime,
+        widget.fueling.createdDateTime);
+
+    model.update(widget.itemIndex, _fuelingChanged);
+    Navigator.pop(_context);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<FuelingListModel>(
-        builder: (BuildContext context, child, model) {
-      _context = context;
-
-      return _build(context);
-    });
+    _context = context;
+    return _build(context);
   }
 
   Widget _build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-      child: Column(
-        children: <Widget>[
-          _date(),
-          _odometr(),
-          _costs(),
-          _fullFuelingCheckbox(),
-          _testing()
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Edit item"),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () {
+              _updateItem();
+            },
+          ),
         ],
+      ),
+      body: Padding(
+        padding:
+            const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+        child: Column(
+          children: <Widget>[
+            _date(),
+            _odometr(),
+            _costs(),
+            _fullFuelingCheckbox(),
+            _testing()
+          ],
+        ),
       ),
     );
   }

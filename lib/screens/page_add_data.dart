@@ -194,7 +194,7 @@ class _FormAddState extends State<FormAdd> {
         builder: (BuildContext context, child, model) {
       _context = context;
 
-      return _build(context, model);
+      return _build(_context, model);
     });
   }
 
@@ -329,7 +329,7 @@ class _FormAddState extends State<FormAdd> {
     return TextFormField(
       controller: inputControllerOdometr,
       decoration: InputDecoration(
-          labelText: 'Odometr state [last: ${model.fuelings.first.odometr}]'),
+          labelText: 'Odometr state [last: ${model.fuelings.isNotEmpty ?? model.fuelings.first.odometr}]'),
       keyboardType: TextInputType.number,
       validator: (value) {
         if (value.isEmpty) {
