@@ -1,5 +1,6 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_2/localizations.dart';
 import 'package:flutter_app_2/model/fueling.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_app_2/model/fuel_list_model.dart';
@@ -178,7 +179,7 @@ class _PageEditFueling extends State<PageEditFueling> {
             _odometr(),
             _costs(),
             _fullFuelingCheckbox(),
-            _testing()
+//            _testing()
           ],
         ),
       ),
@@ -207,7 +208,7 @@ class _PageEditFueling extends State<PageEditFueling> {
     }
 
     return _sectionBody(<Widget>[
-      _sectionTitle("Date and time"),
+      _sectionTitle(AppLocalizations.of(context).dateTime),
       Row(children: <Widget>[
         Flexible(
           child: Padding(
@@ -252,10 +253,10 @@ class _PageEditFueling extends State<PageEditFueling> {
 
   Widget _odometr() {
     return _sectionBody(<Widget>[
-      _sectionTitle("Odometr"),
+      _sectionTitle(AppLocalizations.of(context).odometr),
       TextFormField(
         controller: inputControllerOdometr,
-        decoration: InputDecoration(labelText: 'Odometr state'),
+        decoration: InputDecoration(labelText: '${AppLocalizations.of(context).odometr} ${AppLocalizations.of(context).state}'),
         keyboardType: TextInputType.number,
         validator: (value) {
           if (value.isEmpty) {
@@ -270,7 +271,7 @@ class _PageEditFueling extends State<PageEditFueling> {
 
   Widget _costs() {
     return _sectionBody(<Widget>[
-      _sectionTitle("Price"),
+      _sectionTitle(AppLocalizations.of(context).price),
       Row(
         children: <Widget>[
           Flexible(
@@ -288,7 +289,7 @@ class _PageEditFueling extends State<PageEditFueling> {
               padding: const EdgeInsets.only(left: 5),
               child: TextFormField(
                 controller: inputControllerLiters,
-                decoration: InputDecoration(labelText: 'liters'),
+                decoration: InputDecoration(labelText: AppLocalizations.of(context).litres),
                 keyboardType: TextInputType.number,
               ),
             ),
@@ -298,7 +299,7 @@ class _PageEditFueling extends State<PageEditFueling> {
               padding: const EdgeInsets.only(right: 5, left: 5),
               child: TextFormField(
                 controller: inputControllerCost,
-                decoration: InputDecoration(labelText: 'cost [AUTO]'),
+                decoration: InputDecoration(labelText: '${AppLocalizations.of(context).cost} [AUTO]'),
                 keyboardType: TextInputType.number,
               ),
             ),
@@ -310,11 +311,11 @@ class _PageEditFueling extends State<PageEditFueling> {
 
   Widget _fullFuelingCheckbox() {
     return _sectionBody(<Widget>[
-      _sectionTitle("Full fueling"),
+      _sectionTitle(AppLocalizations.of(context).fullFueling),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text("Full fueling", style: TextStyle(fontSize: 18)),
+          Text(AppLocalizations.of(context).fullFueling, style: TextStyle(fontSize: 18)),
           Checkbox(
               value: _fullFueling,
               onChanged: (bool value) {
@@ -327,25 +328,25 @@ class _PageEditFueling extends State<PageEditFueling> {
     ]);
   }
 
-  Widget _testing() {
-    return Column(
-      children: <Widget>[
-        Text(_fueling.liters == null ? "liters" : "liters: ${_fueling.liters}"),
-        Text(_fueling.price == null ? "price" : "price: ${_fueling.price}"),
-        Text(_fueling.cost == null ? "cost" : "cost: ${_fueling.cost}"),
-        Text(_fueling.odometr == null
-            ? "odometr"
-            : "odometr: ${_fueling.odometr}"),
-        Text(_fueling.fullFueling == null
-            ? "fullFueling"
-            : "fullFueling: ${_fueling.fullFueling}"),
-        Text(_fueling.fuelingDateTime == null
-            ? "fuelingDateTime"
-            : "fuelingDateTime: ${_fueling.fuelingDateTime}"),
-        Text(_fueling.createdDateTime == null
-            ? "createdDateTime"
-            : "createdDateTime: ${_fueling.createdDateTime}"),
-      ],
-    );
-  }
+//  Widget _testing() {
+//    return Column(
+//      children: <Widget>[
+//        Text(_fueling.liters == null ? "liters" : "liters: ${_fueling.liters}"),
+//        Text(_fueling.price == null ? "price" : "price: ${_fueling.price}"),
+//        Text(_fueling.cost == null ? "cost" : "cost: ${_fueling.cost}"),
+//        Text(_fueling.odometr == null
+//            ? "odometr"
+//            : "odometr: ${_fueling.odometr}"),
+//        Text(_fueling.fullFueling == null
+//            ? "fullFueling"
+//            : "fullFueling: ${_fueling.fullFueling}"),
+//        Text(_fueling.fuelingDateTime == null
+//            ? "fuelingDateTime"
+//            : "fuelingDateTime: ${_fueling.fuelingDateTime}"),
+//        Text(_fueling.createdDateTime == null
+//            ? "createdDateTime"
+//            : "createdDateTime: ${_fueling.createdDateTime}"),
+//      ],
+//    );
+//  }
 }

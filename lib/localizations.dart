@@ -66,6 +66,14 @@ class AppLocalizations {
     return Intl.message('not enough data', name: 'noEnoughData');
   }
 
+  String get check {
+    return Intl.message('Check', name: 'check');
+  }
+
+  String get titleEdit {
+    return Intl.message('Edit item', name: 'titleEdit');
+  }
+
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

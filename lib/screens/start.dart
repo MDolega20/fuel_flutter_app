@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_2/app.dart';
+import 'package:flutter_app_2/localizations.dart';
 import 'package:flutter_app_2/model/fueling.dart';
 import 'package:flutter_app_2/screens/page_edit_fueling.dart';
 
@@ -7,7 +8,7 @@ class StartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Fuel app"),
+        title: Text(AppLocalizations.of(context).title),
       ),
       body: StartPageBody(),
     );
@@ -22,7 +23,7 @@ class StartPageBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(
-          "Welcome in my new fuel app!",
+          AppLocalizations.of(context).startText,
           style: TextStyle(fontSize: 50.0),
           textAlign: TextAlign.center,
         ),

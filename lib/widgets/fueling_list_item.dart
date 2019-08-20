@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_2/localizations.dart';
 import 'package:flutter_app_2/screens/page_edit_fueling.dart';
 import 'package:intl/intl.dart';
 
@@ -60,7 +61,7 @@ class _FuelingListItemState extends State<FuelingListItem> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          "Tankowanie",
+          AppLocalizations.of(context).fueling,
           style: textStyle,
         ),
         Text(
@@ -124,7 +125,7 @@ class _FuelingListItemState extends State<FuelingListItem> {
               ),
             ),
             Text(
-              "${widget.itemData.liters.toStringAsFixed(2)} liters",
+              "${widget.itemData.liters.toStringAsFixed(2)} ${AppLocalizations.of(context).litres}",
               style: textStyle,
             ),
           ],
@@ -141,7 +142,7 @@ class _FuelingListItemState extends State<FuelingListItem> {
             Text(
               litersper100 != null
                   ? "${litersper100.toStringAsFixed(2)} l/100km"
-                  : "not enough data l/100km",
+                  : "${AppLocalizations.of(context).noEnoughData} l/100km",
               style: textStyle,
             ),
           ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_2/localizations.dart';
 import 'package:flutter_app_2/screens/page_edit_fueling.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import 'package:flutter_app_2/model/fuel_list_model.dart';
@@ -30,6 +32,14 @@ class FuelApp extends StatelessWidget {
           '/main': (context) => FuelAppMain(),
           '/edit_fueling': (context) => PageEditFueling(),
         },
+        localizationsDelegates: [
+          AppLocalizationsDelegate(),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate
+        ],
+        supportedLocales: [Locale("en"), Locale("pl")],
+        onGenerateTitle: (BuildContext context) =>
+        AppLocalizations.of(context).title,
       ),
     );
   }
