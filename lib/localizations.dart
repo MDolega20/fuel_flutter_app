@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'l10n/messages_all.dart';
+//import 'l10n/messages_all.dart';
 
 class AppLocalizations {
   static Future<AppLocalizations> load(Locale locale) {
@@ -22,13 +22,50 @@ class AppLocalizations {
   }
 
   String get title {
-    return Intl.message('Hello world App',
+    return Intl.message('Fuel app',
         name: 'title', desc: 'The application title');
   }
 
-  String get hello {
-    return Intl.message('Hello', name: 'hello');
+  String get startText {
+    return Intl.message('Welcome in my new fuel app', name: 'startText');
   }
+
+  String get dateTime {
+    return Intl.message('date and time', name: 'dateTime');
+  }
+
+  String get odometr {
+    return Intl.message('odometr', name: 'odometr');
+  }
+
+  String get state {
+    return Intl.message('state', name: 'state');
+  }
+
+  String get price {
+    return Intl.message('price', name: 'price');
+  }
+
+  String get litres {
+    return Intl.message('litres', name: 'litres');
+  }
+
+  String get cost {
+    return Intl.message('cost', name: 'cost');
+  }
+
+  String get fullFueling {
+    return Intl.message('full fueling', name: 'fullFueling');
+  }
+
+  String get fueling {
+    return Intl.message('tankowanie', name: 'fueling');
+  }
+
+  String get noEnoughData {
+    return Intl.message('not enough data', name: 'noEnoughData');
+  }
+
 }
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -36,7 +73,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
 
   @override
   bool isSupported(Locale locale) {
-    return ['en', 'es', 'pt'].contains(locale.languageCode);
+    return ['pl', 'en'].contains(locale.languageCode);
   }
 
   @override
