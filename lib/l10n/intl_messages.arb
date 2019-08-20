@@ -1,0 +1,59 @@
+{
+  "@@last_modified": "2019-08-20T09:04:55.735585",
+  "title": "Fuel app",
+  "@title": {
+    "description": "The application title",
+    "type": "text",
+    "placeholders": {}
+  },
+  "startText": "Welcome in my new fuel app",
+  "@startText": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "dateTime": "date and time",
+  "@dateTime": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "odometr": "odometr",
+  "@odometr": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "state": "state",
+  "@state": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "price": "price",
+  "@price": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "litres": "litres",
+  "@litres": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cost": "cost",
+  "@cost": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "fullFueling": "full fueling",
+  "@fullFueling": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "fueling": "tankowanie",
+  "@fueling": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noEnoughData": "not enough data",
+  "@noEnoughData": {
+    "type": "text",
+    "placeholders": {}
+  }
+}
