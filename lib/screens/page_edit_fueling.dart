@@ -179,7 +179,6 @@ class _PageEditFueling extends State<PageEditFueling> {
             _odometr(),
             _costs(),
             _fullFuelingCheckbox(),
-//            _testing()
           ],
         ),
       ),
@@ -328,25 +327,4 @@ class _PageEditFueling extends State<PageEditFueling> {
     ]);
   }
 
-//  Widget _testing() {
-//    return Column(
-//      children: <Widget>[
-//        Text(_fueling.liters == null ? "liters" : "liters: ${_fueling.liters}"),
-//        Text(_fueling.price == null ? "price" : "price: ${_fueling.price}"),
-//        Text(_fueling.cost == null ? "cost" : "cost: ${_fueling.cost}"),
-//        Text(_fueling.odometr == null
-//            ? "odometr"
-//            : "odometr: ${_fueling.odometr}"),
-//        Text(_fueling.fullFueling == null
-//            ? "fullFueling"
-//            : "fullFueling: ${_fueling.fullFueling}"),
-//        Text(_fueling.fuelingDateTime == null
-//            ? "fuelingDateTime"
-//            : "fuelingDateTime: ${_fueling.fuelingDateTime}"),
-//        Text(_fueling.createdDateTime == null
-//            ? "createdDateTime"
-//            : "createdDateTime: ${_fueling.createdDateTime}"),
-//      ],
-//    );
-//  }
 }

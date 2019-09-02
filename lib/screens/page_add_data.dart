@@ -1,6 +1,7 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_app_2/localizations.dart';
 import 'package:flutter_app_2/model/fuel_list_model.dart';
 import 'package:flutter_app_2/model/fueling.dart';
 import 'package:intl/intl.dart';
@@ -25,42 +26,82 @@ class _FormAddState extends State<FormAdd> {
 
   final _formKey = GlobalKey<FormState>();
 
-  double liters;
-  double price;
-  double cost;
-  int odometr;
-
-  bool fullFueling = true;
-
-  DateTime fuelingDateTime;
-  DateTime createdDateTime = new DateTime.now();
-
   TextEditingController inputControllerOdometr = new TextEditingController();
   TextEditingController inputControllerPrice = new TextEditingController();
   TextEditingController inputControllerCost = new TextEditingController();
   TextEditingController inputControllerLiters = new TextEditingController();
 
-  DateTime dateStart = new DateTime.now();
-  DateTime timeStart = new DateTime.now();
+  DateTime _dateStart;
+  DateTime _timeStart;
+  DateTime _fuelingDateTime = new DateTime.now();
+  DateTime _createdDateTime = new DateTime.now();
+
+  int _odometrState;
+  double _price;
+  double _cost;
+  double _liters;
+
+  bool _fullFueling = true;
 
   @override
   void initState() {
-    super.initState();
     _controllerListeners();
     _compareDateTime();
+    super.initState();
+  }
+
+  void _controllerListeners() {
+    inputControllerOdometr.addListener(() {
+      if (inputControllerOdometr.text != null &&
+          inputControllerOdometr.text != "" &&
+          _odometrState != int.parse(inputControllerOdometr.text)) {
+        setState(() {
+          _odometrState = int.parse(inputControllerOdometr.text);
+        });
+      }
+    });
+    inputControllerPrice.addListener(() {
+      if (inputControllerPrice.text != null &&
+          inputControllerPrice.text != "" &&
+          _price != double.parse(inputControllerPrice.text)) {
+        setState(() {
+          _price = double.parse(inputControllerPrice.text);
+        });
+      }
+      _calcFuelingCost();
+    });
+    inputControllerCost.addListener(() {
+      if (inputControllerCost.text != null &&
+          inputControllerCost.text != "" &&
+          _cost != double.parse(inputControllerCost.text)) {
+        setState(() {
+          _cost = double.parse(inputControllerCost.text);
+        });
+      }
+    });
+    inputControllerLiters.addListener(() {
+      if (inputControllerLiters.text != null &&
+          inputControllerLiters.text != "" &&
+          _liters != double.parse(inputControllerLiters.text)) {
+        setState(() {
+          _liters = double.parse(inputControllerLiters.text);
+        });
+      }
+      _calcFuelingCost();
+    });
   }
 
   void _addItem() async {
-    if (liters != null &&
-        price != null &&
-        cost != null &&
-        odometr != null &&
-        fuelingDateTime != null &&
-        createdDateTime != null) {
+    if (_liters != null &&
+        _price != null &&
+        _cost != null &&
+        _odometrState != null &&
+        _fuelingDateTime != null &&
+        _createdDateTime != null) {
       final model = ScopedModel.of<FuelingListModel>(_context);
 
-      Fueling _newItem = Fueling(liters, price, cost, odometr, fullFueling,
-          fuelingDateTime, createdDateTime);
+      Fueling _newItem = Fueling(_liters, _price, _cost, _odometrState, _fullFueling,
+          _fuelingDateTime, _createdDateTime);
 
       model.add(_newItem);
     } else {
@@ -70,115 +111,6 @@ class _FormAddState extends State<FormAdd> {
     await Scaffold.of(context).showSnackBar(SnackBar(content: Text('Saved')));
   }
 
-  void _controllerListeners() {
-    inputControllerOdometr.addListener(() {
-      if (inputControllerOdometr.text != null &&
-          inputControllerOdometr.text != "" &&
-          odometr != int.parse(inputControllerOdometr.text)) {
-        setState(() {
-          odometr = int.parse(inputControllerOdometr.text);
-        });
-      }
-    });
-    inputControllerPrice.addListener(() {
-      if (inputControllerPrice.text != null &&
-          inputControllerPrice.text != "" &&
-          price != double.parse(inputControllerPrice.text)) {
-        setState(() {
-          price = double.parse(inputControllerPrice.text);
-        });
-      }
-      _calcLiters();
-    });
-    inputControllerCost.addListener(() {
-      if (inputControllerCost.text != null &&
-          inputControllerCost.text != "" &&
-          cost != double.parse(inputControllerCost.text)) {
-        setState(() {
-          cost = double.parse(inputControllerCost.text);
-        });
-      }
-      _calcLiters();
-    });
-    inputControllerLiters.addListener(() {
-      if (inputControllerLiters.text != null &&
-          inputControllerLiters.text != "" &&
-          liters != double.parse(inputControllerLiters.text)) {
-        setState(() {
-          liters = double.parse(inputControllerLiters.text);
-        });
-      }
-      _calcLiters();
-    });
-  }
-
-  void _compareDateTime() {
-    if (dateStart != null && timeStart != null) {
-      setState(() {
-        fuelingDateTime = dateStart.add(
-            new Duration(hours: timeStart.hour, minutes: timeStart.minute));
-      });
-    }
-  }
-
-  void _calcLiters() {
-    double _round(number){
-      return double.parse((number).toStringAsFixed(2));
-    }
-    void _setLiters() {
-      setState(() {
-        double result = _round(cost / price);
-        inputControllerLiters.text = result.toString();
-        liters = result;
-      });
-    }
-
-    ;
-    void _setPrice() {
-      setState(() {
-        double result = _round(cost / liters);
-        inputControllerPrice.text = result.toString();
-        price = result;
-      });
-    }
-
-    void _setCost() {
-      setState(() {
-        double result = _round(price * liters);
-        inputControllerCost.text = result.toString();
-        cost = result;
-      });
-    }
-
-
-    if (liters == null && price == null && cost == null) {
-      return null;
-    } else if (double.tryParse(inputControllerLiters.text) != null &&
-        double.tryParse(inputControllerPrice.text) != null &&
-        double.tryParse(inputControllerCost.text) == null) {
-      return null;
-    } else if (inputControllerLiters.text == "" &&
-        price != null &&
-        cost != null) {
-      _setLiters();
-    } else if (liters != null &&
-        inputControllerPrice.text == "" &&
-        cost != null) {
-      _setPrice();
-    } else if (liters != null &&
-        price != null &&
-        inputControllerCost.text == "") {
-      _setCost();
-    }
-//    else if (liters != cost / price) {
-//      _setLiters();
-//    } else if (price != cost / liters) {
-//      _setPrice();
-//    } else if (cost != price * liters) {
-//      _setCost();
-//    }
-  }
-
   void dispose() {
     inputControllerOdometr.dispose();
     inputControllerPrice.dispose();
@@ -186,6 +118,41 @@ class _FormAddState extends State<FormAdd> {
     inputControllerLiters.dispose();
 
     super.dispose();
+  }
+
+  void _compareDateTime() {
+    print("Compare... ${_dateStart} ${_timeStart}");
+    if (_dateStart != null && _timeStart != null) {
+      setState(() {
+        _fuelingDateTime = _dateStart.add(
+            new Duration(hours: _timeStart.hour, minutes: _timeStart.minute));
+      });
+    }
+  }
+
+  void _calcFuelingCost() {
+    if (_liters != null && _price != null) {
+      setState(() {
+        double cost = _liters * _price;
+        _cost = cost;
+        inputControllerCost.text = cost.toStringAsFixed(2);
+      });
+    }
+  }
+
+  Widget _sectionTitle(text) {
+    return Text(
+      text.toUpperCase(),
+      style: TextStyle(fontSize: 15),
+    );
+  }
+
+  Widget _sectionBody(children) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10.0),
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start, children: children),
+    );
   }
 
   @override
@@ -207,13 +174,17 @@ class _FormAddState extends State<FormAdd> {
               padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
               child: Column(
                 children: <Widget>[
-                  _formSectionDateTime(),
-                  SizedBox(height: 5),
-                  _fromSectionOdometr(context, model),
-                  SizedBox(height: 5),
-                  _fromSectionLiters(),
-                  SizedBox(height: 5),
-                  _formSectionFullFueling(),
+                  _date(),
+                  _odometr(context, model),
+                  _costs(),
+                  _fullFuelingCheckbox(),
+//                  _formSectionDateTime(),
+//                  SizedBox(height: 5),
+//                  _fromSectionOdometr(context, model),
+//                  SizedBox(height: 5),
+//                  _fromSectionLiters(),
+//                  SizedBox(height: 5),
+//                  _formSectionFullFueling(),
                   SizedBox(height: 5),
                   _fromSubmit(),
                   SizedBox(height: 25),
@@ -225,64 +196,64 @@ class _FormAddState extends State<FormAdd> {
     );
   }
 
-  // Testing summary
+//  // Testing summary
   Widget _testing() {
     return Column(
       children: <Widget>[
-        Text(liters == null ? "liters" : "liters: $liters"),
-        Text(price == null ? "price" : "price: $price"),
-        Text(cost == null ? "cost" : "cost: $cost"),
-        Text(odometr == null ? "odometr" : "odometr: $odometr"),
-        Text(fullFueling == null ? "fullFueling" : "fullFueling: $fullFueling"),
-        Text(fuelingDateTime == null
+        Text(_liters == null ? "liters" : "liters: $_liters"),
+        Text(_price == null ? "price" : "price: $_price"),
+        Text(_cost == null ? "cost" : "cost: $_cost"),
+        Text(_odometrState == null ? "odometr" : "odometr: $_odometrState"),
+        Text(_fullFueling == null ? "fullFueling" : "fullFueling: $_fullFueling"),
+        Text(_fuelingDateTime == null
             ? "fuelingDateTime"
-            : "fuelingDateTime: $fuelingDateTime"),
-        Text(createdDateTime == null
+            : "fuelingDateTime: $_fuelingDateTime"),
+        Text(_createdDateTime == null
             ? "createdDateTime"
-            : "createdDateTime: $createdDateTime"),
+            : "createdDateTime: $_createdDateTime"),
       ],
     );
   }
 
-  Widget _formSectionDateTime() {
+  Widget _date() {
+    DateTime _currentValue = DateTime.now();
+
     final formatDate = DateFormat("yyyy-MM-dd");
     final formatTime = DateFormat("HH:mm");
 
-    return Row(
-      children: <Widget>[
+    void _setDate(date) {
+      setState(() {
+        _dateStart = date;
+      });
+      _compareDateTime();
+    }
+
+    void _setTime(date) {
+      setState(() {
+        _timeStart = date;
+      });
+      _compareDateTime();
+    }
+
+    return _sectionBody(<Widget>[
+      _sectionTitle(AppLocalizations.of(context).dateTime),
+      Row(children: <Widget>[
         Flexible(
           child: Padding(
             padding: const EdgeInsets.only(right: 5),
             child: DateTimeField(
-              format: formatDate,
-              onShowPicker: (context, currentValue) {
-                return showDatePicker(
+                format: formatDate,
+                onShowPicker: (context, currentValue) {
+                  return showDatePicker(
                     context: context,
                     firstDate: DateTime(1900),
-                    initialDate: currentValue ?? DateTime.now(),
-                    lastDate: DateTime(2100));
-              },
-              validator: (date) => date == null ? 'Invalid date' : null,
-              initialValue: dateStart,
-              onChanged: (date) => {
-                if (dateStart != date)
-                  {
-                    setState(() {
-                      dateStart = date;
-                    }),
-                    _compareDateTime()
-                  }
-              },
-              onSaved: (date) => {
-                if (dateStart != date)
-                  {
-                    setState(() {
-                      dateStart = date;
-                    }),
-                    _compareDateTime()
-                  }
-              },
-            ),
+                    initialDate: _currentValue ?? DateTime.now(),
+                    lastDate: DateTime(2100),
+                  );
+                },
+                validator: (date) => date == null ? 'Invalid date' : null,
+                initialValue: _currentValue,
+                onChanged: (date) => _setDate(date)),
           ),
         ),
         Flexible(
@@ -294,110 +265,95 @@ class _FormAddState extends State<FormAdd> {
                 final time = await showTimePicker(
                   context: context,
                   initialTime:
-                      TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                  TimeOfDay.fromDateTime(_currentValue ?? DateTime.now()),
                 );
                 return DateTimeField.convert(time);
               },
               validator: (date) => date == null ? 'Invalid date' : null,
-              initialValue: timeStart,
-              onChanged: (date) => {
-                if (timeStart != date)
-                  {
-                    setState(() {
-                      timeStart = date;
-                    }),
-                    _compareDateTime()
-                  }
-              },
-              onSaved: (date) => {
-                if (timeStart != date)
-                  {
-                    setState(() {
-                      timeStart = date;
-                    }),
-                    _compareDateTime()
-                  }
-              },
+              initialValue: _currentValue,
+              onChanged: (date) => _setTime(date),
             ),
           ),
         ),
-      ],
-    );
+      ]),
+    ]);
   }
 
-  Widget _fromSectionOdometr(BuildContext context, FuelingListModel model) {
-    return TextFormField(
-      controller: inputControllerOdometr,
-      decoration: InputDecoration(
-          labelText: 'Odometr state [last: ${model.fuelings.isNotEmpty ?? model.fuelings.first.odometr}]'),
-      keyboardType: TextInputType.number,
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'State mustn\'t be null';
-        }
-        if (model.fuelings.isNotEmpty) {
-          if (int.parse(value) < model.fuelings.first.odometr) {
-            //TODO fix that
-            return 'State is lower than before';
+  Widget _odometr(BuildContext context, FuelingListModel model) {
+    return _sectionBody(<Widget>[
+      _sectionTitle(AppLocalizations.of(context).odometr),
+      TextFormField(
+        controller: inputControllerOdometr,
+        decoration: InputDecoration(labelText: '${AppLocalizations.of(context).odometr} ${AppLocalizations.of(context).state} [${model.fuelings.isNotEmpty ? model.fuelings.first.odometr.toString() : "No data yet :("}]'),
+        keyboardType: TextInputType.number,
+        validator: (value) {
+          if (value.isEmpty) {
+            return 'State mustn\'t be null';
           }
-        }
 
-        return null;
-      },
-    );
+          return null;
+        },
+      )
+    ]);
   }
 
-  Widget _fromSectionLiters() {
-    return Row(
-      children: <Widget>[
-        Flexible(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 5),
-            child: TextFormField(
-              controller: inputControllerPrice,
-              decoration: InputDecoration(labelText: 'pln/l'),
-              keyboardType: TextInputType.number,
+  Widget _costs() {
+    return _sectionBody(<Widget>[
+      _sectionTitle(AppLocalizations.of(context).price),
+      Row(
+        children: <Widget>[
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: TextFormField(
+                controller: inputControllerPrice,
+                decoration: InputDecoration(labelText: 'pln/l'),
+                keyboardType: TextInputType.number,
+              ),
             ),
           ),
-        ),
-        Flexible(
-          child: Padding(
-            padding: const EdgeInsets.only(right: 5, left: 5),
-            child: TextFormField(
-              controller: inputControllerCost,
-              decoration: InputDecoration(labelText: 'cost'),
-              keyboardType: TextInputType.number,
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: TextFormField(
+                controller: inputControllerLiters,
+                decoration: InputDecoration(labelText: AppLocalizations.of(context).litres),
+                keyboardType: TextInputType.number,
+              ),
             ),
           ),
-        ),
-        Flexible(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 5),
-            child: TextFormField(
-              controller: inputControllerLiters,
-              decoration: InputDecoration(labelText: 'liters'),
-              keyboardType: TextInputType.number,
+          Flexible(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 5, left: 5),
+              child: TextFormField(
+                controller: inputControllerCost,
+                decoration: InputDecoration(labelText: '${AppLocalizations.of(context).cost} [AUTO]'),
+                keyboardType: TextInputType.number,
+              ),
             ),
-          ),
-        )
-      ],
-    );
+          )
+        ],
+      )
+    ]);
   }
 
-  Widget _formSectionFullFueling() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text("Full fueling", style: TextStyle(fontSize: 18)),
-        Checkbox(
-            value: fullFueling,
-            onChanged: (bool value) {
-              setState(() {
-                fullFueling = value;
-              });
-            })
-      ],
-    );
+  Widget _fullFuelingCheckbox() {
+    return _sectionBody(<Widget>[
+      _sectionTitle(AppLocalizations.of(context).fullFueling),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(AppLocalizations.of(context).fullFueling, style: TextStyle(fontSize: 18)),
+          Checkbox(
+              value: _fullFueling,
+              onChanged: (bool value) {
+                setState(() {
+                  _fullFueling = value;
+                });
+              })
+        ],
+      )
+    ]);
   }
 
   Widget _fromSubmit() {
@@ -415,4 +371,5 @@ class _FormAddState extends State<FormAdd> {
       ),
     );
   }
+
 }
