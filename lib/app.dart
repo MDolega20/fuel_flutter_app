@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_2/localizations.dart';
+import 'package:flutter_app_2/screens/page_calculator.dart';
 import 'package:flutter_app_2/screens/page_edit_fueling.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -30,7 +31,6 @@ class FuelApp extends StatelessWidget {
         routes: {
           '/start': (context) => StartPage(),
           '/main': (context) => FuelAppMain(),
-          '/edit_fueling': (context) => PageEditFueling(),
         },
         localizationsDelegates: [
           AppLocalizationsDelegate(),
@@ -49,7 +49,7 @@ class FuelAppMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -58,6 +58,7 @@ class FuelAppMain extends StatelessWidget {
               Tab(icon: Icon(Icons.add)),
               Tab(icon: Icon(Icons.history)),
               Tab(icon: Icon(Icons.equalizer)),
+              Tab(icon: Icon(Icons.exposure)),
             ],
           ),
           title: Text('Fuel app'),
@@ -78,6 +79,7 @@ class FuelAppMain extends StatelessWidget {
             PageAddData(),
             PageHistory(),
             PageStatistics(),
+            PageCalculator(),
           ],
         ),
       ),
