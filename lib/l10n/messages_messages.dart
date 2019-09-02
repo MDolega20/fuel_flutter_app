@@ -22,6 +22,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "check" : MessageLookupByLibrary.simpleMessage("Check"),
     "cost" : MessageLookupByLibrary.simpleMessage("cost"),
     "dateTime" : MessageLookupByLibrary.simpleMessage("date and time"),
     "fueling" : MessageLookupByLibrary.simpleMessage("tankowanie"),
@@ -32,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "price" : MessageLookupByLibrary.simpleMessage("price"),
     "startText" : MessageLookupByLibrary.simpleMessage("Welcome in my new fuel app"),
     "state" : MessageLookupByLibrary.simpleMessage("state"),
-    "title" : MessageLookupByLibrary.simpleMessage("Fuel app")
+    "title" : MessageLookupByLibrary.simpleMessage("Fuel app"),
+    "titleEdit" : MessageLookupByLibrary.simpleMessage("Edit item")
   };
 }
