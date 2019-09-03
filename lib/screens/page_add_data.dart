@@ -121,7 +121,6 @@ class _FormAddState extends State<FormAdd> {
   }
 
   void _compareDateTime() {
-    print("Compare... ${_dateStart} ${_timeStart}");
     if (_dateStart != null && _timeStart != null) {
       setState(() {
         _fuelingDateTime = _dateStart.add(
@@ -178,13 +177,6 @@ class _FormAddState extends State<FormAdd> {
                   _odometr(context, model),
                   _costs(),
                   _fullFuelingCheckbox(),
-//                  _formSectionDateTime(),
-//                  SizedBox(height: 5),
-//                  _fromSectionOdometr(context, model),
-//                  SizedBox(height: 5),
-//                  _fromSectionLiters(),
-//                  SizedBox(height: 5),
-//                  _formSectionFullFueling(),
                   SizedBox(height: 5),
                   _fromSubmit(),
                   SizedBox(height: 25),
