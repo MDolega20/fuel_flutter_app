@@ -39,11 +39,11 @@ class _Calculator extends State<Calculator> {
   double _distance;
   double _comsumption;
 
-  bool _litersAuto = false;
-  bool _priceAuto = false;
-  bool _costAuto = true;
-  bool _distanceAuto = false;
-  bool _comsumptionAuto = true;
+  bool _autoListers = false;
+  bool _autoPrice = false;
+  bool _autoCost = true;
+  bool _autoDistance = false;
+  bool _autoComsumption = true;
 
   @override
   void initState() {
@@ -52,24 +52,6 @@ class _Calculator extends State<Calculator> {
   }
 
   void _controllerListeners() {
-    // on input change
-
-    //TODO pobieranie nazwy zmiennej i używanie w pętli zmiennych które nazwy zapisane sa w tablicy "liście"
-//    List<TextEditingController> controllers = [inputControllerLiters, inputControllerCost, inputControllerPrice, inputControllerDistance, inputControllerComsumption];
-//    List<String> variables = ["_liters", "_cost", "_price", "_distance", "_comsumption"];
-//
-//    for(int i = 0; i < controllers.length; i++){
-//          controllers[i].addListener(() {
-//      if (controllers[i].text != null &&
-//          controllers[i].text != "" &&
-//          [variables[i]] != double.parse(controllers[i].text)) {
-//        setState(() {
-//          [variables[i]] = double.parse(controllers[i].text);
-//        });
-//      }
-//    });
-//    }
-    // old way
 
     inputControllerLiters.addListener(() {
       if (inputControllerLiters.text != null &&
@@ -127,16 +109,11 @@ class _Calculator extends State<Calculator> {
       child: Column(
         children: <Widget>[
           _header(),
-          _field(inputControllerLiters, AppLocalizations.of(context).litres,
-              _litersAuto),
-          _field(inputControllerPrice, AppLocalizations.of(context).price,
-              _priceAuto),
-          _field(inputControllerCost, AppLocalizations.of(context).cost,
-              _costAuto),
-          _field(inputControllerDistance, "//TODO distancen",
-              _distanceAuto),
-          _field(inputControllerComsumption, "//TODO comsumption",
-              _comsumptionAuto),
+          _fieldLiters(),
+          _fieldPrice(),
+          _fieldCost(),
+          _fieldDistance(),
+          _fieldComsumption()
         ],
       ),
     );
@@ -151,15 +128,16 @@ class _Calculator extends State<Calculator> {
       ],
     );
   }
-  Widget _field(controller, name, auto) {
+
+  Widget _fieldLiters() {
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Flexible(
           child: TextFormField(
-            controller: controller,
-            decoration: InputDecoration(labelText: '${name}'),
+            controller: inputControllerLiters,
+            decoration: InputDecoration(labelText: '${AppLocalizations.of(context).litres}'),
             keyboardType: TextInputType.number,
             validator: (value) {
               if (value.isEmpty) {
@@ -173,11 +151,148 @@ class _Calculator extends State<Calculator> {
           width: 50,
           alignment: Alignment(0, 0),
           child: Checkbox(
-            value: auto,
+            value: _autoListers,
             onChanged: (bool value) {
               setState(() {
-                print("Checkbox changed! value=${auto} $value");
-                auto = value;
+                _autoListers = value;
+              });
+            },
+          ),
+        )
+      ],
+    );
+  }
+  Widget _fieldPrice() {
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Flexible(
+          child: TextFormField(
+            controller: inputControllerPrice,
+            decoration: InputDecoration(labelText: '${AppLocalizations.of(context).price}'),
+            keyboardType: TextInputType.number,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'State mustn\'t be null';
+              }
+              return null;
+            },
+          ),
+        ),
+        Container(
+          width: 50,
+          alignment: Alignment(0, 0),
+          child: Checkbox(
+            value: _autoPrice,
+            onChanged: (bool value) {
+              setState(() {
+                _autoPrice = value;
+              });
+            },
+          ),
+        )
+      ],
+    );
+  }
+  Widget _fieldCost() {
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Flexible(
+          child: TextFormField(
+            controller: inputControllerCost,
+            decoration: InputDecoration(labelText: '${AppLocalizations.of(context).cost}'),
+            keyboardType: TextInputType.number,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'State mustn\'t be null';
+              }
+              return null;
+            },
+          ),
+        ),
+        Container(
+          width: 50,
+          alignment: Alignment(0, 0),
+          child: Checkbox(
+            value: _autoCost,
+            onChanged: (bool value) {
+              setState(() {
+                _autoCost = value;
+              });
+            },
+          ),
+        )
+      ],
+    );
+  }
+  Widget _fieldDistance() {
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Flexible(
+          child: TextFormField(
+            controller: inputControllerDistance,
+            decoration: InputDecoration(labelText: '${
+//                AppLocalizations.of(context).distance
+            "distance //TODO"
+            }'),
+            keyboardType: TextInputType.number,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'State mustn\'t be null';
+              }
+              return null;
+            },
+          ),
+        ),
+        Container(
+          width: 50,
+          alignment: Alignment(0, 0),
+          child: Checkbox(
+            value: _autoDistance,
+            onChanged: (bool value) {
+              setState(() {
+                _autoDistance = value;
+              });
+            },
+          ),
+        )
+      ],
+    );
+  }
+  Widget _fieldComsumption() {
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Flexible(
+          child: TextFormField(
+            controller: inputControllerComsumption,
+            decoration: InputDecoration(labelText: '${
+//                AppLocalizations.of(context).comsumption
+                "comsumption //TODO"
+            }'),
+            keyboardType: TextInputType.number,
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'State mustn\'t be null';
+              }
+              return null;
+            },
+          ),
+        ),
+        Container(
+          width: 50,
+          alignment: Alignment(0, 0),
+          child: Checkbox(
+            value: _autoComsumption,
+            onChanged: (bool value) {
+              setState(() {
+                _autoComsumption = value;
               });
             },
           ),
