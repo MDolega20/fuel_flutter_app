@@ -39,7 +39,7 @@ class _Calculator extends State<Calculator> {
   double _distance;
   double _comsumption;
 
-  bool _autoListers = false;
+  bool _autoLiters = false;
   bool _autoPrice = false;
   bool _autoCost = true;
   bool _autoDistance = false;
@@ -52,55 +52,72 @@ class _Calculator extends State<Calculator> {
   }
 
   void _controllerListeners() {
-
     inputControllerLiters.addListener(() {
-      if (inputControllerLiters.text != null &&
-          inputControllerLiters.text != "" &&
-          _liters != double.parse(inputControllerLiters.text)) {
-        setState(() {
-          _liters = double.parse(inputControllerLiters.text);
-        });
-      }
+      _calc();
     });
     inputControllerComsumption.addListener(() {
-      if (inputControllerComsumption.text != null &&
-          inputControllerComsumption.text != "" &&
-          _comsumption != double.parse(inputControllerComsumption.text)) {
-        setState(() {
-          _comsumption = double.parse(inputControllerComsumption.text);
-        });
-      }
+      _calc();
     });
     inputControllerDistance.addListener(() {
-      if (inputControllerDistance.text != null &&
-          inputControllerDistance.text != "" &&
-          _liters != double.parse(inputControllerDistance.text)) {
-        setState(() {
-          _liters = double.parse(inputControllerDistance.text);
-        });
-      }
+      _calc();
     });
     inputControllerPrice.addListener(() {
-      if (inputControllerPrice.text != null &&
-          inputControllerPrice.text != "" &&
-          _price != double.parse(inputControllerPrice.text)) {
-        setState(() {
-          _price = double.parse(inputControllerPrice.text);
-        });
-      }
+      _calc();
     });
     inputControllerCost.addListener(() {
-      if (inputControllerCost.text != null &&
-          inputControllerCost.text != "" &&
-          _cost != double.parse(inputControllerCost.text)) {
-        setState(() {
-          _cost = double.parse(inputControllerCost.text);
-        });
-      }
+      _calc();
     });
   }
 
-  void _calc() {}
+  void _calc() {
+
+    double parse(string){
+      return double.tryParse(string); //return double or null
+    }
+
+    //auto cost
+    if(_autoCost){
+      if(parse(inputControllerPrice.text) != null && parse(inputControllerLiters.text) != null){
+        setState(() {
+          inputControllerCost.text = (parse(inputControllerPrice.text)*parse(inputControllerLiters.text)).toString();
+        });
+      }
+    }
+    //auto price
+    if(_autoPrice){
+      if(parse(inputControllerLiters.text) != null && parse(inputControllerCost.text) != null){
+        setState(() {
+          inputControllerPrice.text = (parse(inputControllerCost.text)/parse(inputControllerLiters.text)).toString();
+        });
+      }
+    }
+    //auto liters
+    if(_autoLiters){
+      if(parse(inputControllerPrice.text) != null && parse(inputControllerCost.text) != null){
+        setState(() {
+          inputControllerLiters.text = (parse(inputControllerCost.text)/parse(inputControllerPrice.text)).toString();
+        });
+      }
+    }
+    //TODO do it right
+    //auto comsumption
+    if(_autoComsumption){
+      if(parse(inputControllerDistance.text) != null && parse(inputControllerLiters.text) != null){
+        setState(() {
+          inputControllerComsumption.text = (parse(inputControllerDistance.text)*parse(inputControllerLiters.text)).toString();
+        });
+      }
+    }
+    //TODO do it right
+    //auto distance
+    if(_autoDistance){
+      if(parse(inputControllerComsumption.text) != null && parse(inputControllerCost.text) != null){
+        setState(() {
+          inputControllerDistance.text = (parse(inputControllerComsumption.text)/parse(inputControllerLiters.text)).toString();
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -151,10 +168,10 @@ class _Calculator extends State<Calculator> {
           width: 50,
           alignment: Alignment(0, 0),
           child: Checkbox(
-            value: _autoListers,
+            value: _autoLiters,
             onChanged: (bool value) {
               setState(() {
-                _autoListers = value;
+                _autoLiters = value;
               });
             },
           ),

@@ -77,3 +77,5 @@ build/
 **/android/*
 **/build/*
 **/build
+/android/*
+.dart_tool
