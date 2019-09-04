@@ -32,13 +32,7 @@ class _Calculator extends State<Calculator> {
   TextEditingController inputControllerComsumption =
       new TextEditingController();
 
-  // data changing
-  double _liters;
-  double _cost;
-  double _price;
-  double _distance;
-  double _comsumption;
-
+  // checkboxes state
   bool _autoLiters = false;
   bool _autoPrice = false;
   bool _autoCost = true;
@@ -68,7 +62,6 @@ class _Calculator extends State<Calculator> {
       _calc();
     });
   }
-
   void _calc() {
 
     double parse(string){
@@ -99,21 +92,24 @@ class _Calculator extends State<Calculator> {
         });
       }
     }
-    //TODO do it right
     //auto comsumption
     if(_autoComsumption){
       if(parse(inputControllerDistance.text) != null && parse(inputControllerLiters.text) != null){
         setState(() {
-          inputControllerComsumption.text = (parse(inputControllerDistance.text)*parse(inputControllerLiters.text)).toString();
+          inputControllerComsumption.text = (
+              (parse(inputControllerLiters.text) / parse(inputControllerDistance.text)) * 100
+          ).toStringAsFixed(2);
         });
       }
     }
-    //TODO do it right
     //auto distance
     if(_autoDistance){
       if(parse(inputControllerComsumption.text) != null && parse(inputControllerCost.text) != null){
         setState(() {
-          inputControllerDistance.text = (parse(inputControllerComsumption.text)/parse(inputControllerLiters.text)).toString();
+          inputControllerDistance.text = (
+              //TODO do it right
+              parse(inputControllerComsumption.text) / 100 * parse(inputControllerDistance.text) * parse(inputControllerLiters.text)
+          ).toString();
         });
       }
     }
@@ -145,7 +141,6 @@ class _Calculator extends State<Calculator> {
       ],
     );
   }
-
   Widget _fieldLiters() {
 
     return Row(
